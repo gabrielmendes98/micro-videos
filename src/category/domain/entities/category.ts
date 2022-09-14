@@ -16,6 +16,10 @@ export class Category {
     return this.props.name;
   }
 
+  private set name(value: string) {
+    this.props.name = value;
+  }
+
   get description() {
     return this.props.description;
   }
@@ -29,7 +33,7 @@ export class Category {
   }
 
   private set is_active(value: boolean) {
-    this.props.is_active = value ?? null;
+    this.props.is_active = value ?? true;
   }
 
   get created_at() {
