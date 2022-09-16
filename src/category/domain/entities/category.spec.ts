@@ -1,6 +1,6 @@
 import { Category, CategoryProperties } from './category';
 import { omit } from 'lodash';
-import { UniqueEntityId } from 'shared/domain/unique-entity-id.vo';
+import { UniqueEntityId } from 'shared/domain/value-objects/unique-entity-id.vo';
 
 describe('category unit tests', () => {
   describe('constructor of category', () => {
