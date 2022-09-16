@@ -1,5 +1,5 @@
 import { InvalidUuidError } from 'shared/errors/invalid-uuid.error';
-import { UniqueEntityId } from './unique-entity-id.vo';
+import { UniqueEntityId } from '../unique-entity-id.vo';
 import { validate as uuidValidate } from 'uuid';
 
 describe('UniqueEntityId unit tests', () => {
@@ -13,7 +13,7 @@ describe('UniqueEntityId unit tests', () => {
   it('should accept a uuid passed in constructor', () => {
     const uuid = '8db4bb64-7109-4da2-be10-a9c16f7ed96e';
     const vo = new UniqueEntityId(uuid);
-    expect(vo.id).toBe(uuid);
+    expect(vo.value).toBe(uuid);
     expect(validateSpy).toHaveBeenCalled();
   });
 });
@@ -23,7 +23,7 @@ describe('UniqueEntityId integration tests', () => {
 
   it('should generate a uuid', () => {
     const vo = new UniqueEntityId();
-    expect(uuidValidate(vo.id)).toBeTruthy();
+    expect(uuidValidate(vo.value)).toBeTruthy();
     expect(validateSpy).toHaveBeenCalled();
   });
 });
