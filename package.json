@@ -8,7 +8,7 @@
     "tsc": "tsc",
     "clean:tsc": "rm tsconfig.tsbuildinfo",
     "test": "jest",
-    "test:w": "jest --watchAll"
+    "test:w": "jest --watch"
   },
   "keywords": [],
   "author": "",
