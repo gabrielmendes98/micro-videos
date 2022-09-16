@@ -1,8 +1,10 @@
 FROM node:14.15.4-slim
 
-RUN apt update && apt install -y --no-install-recommends \
+RUN mkdir -p /usr/share/man/man1 && \
+    apt update && apt install -y --no-install-recommends \
     git \
-    ca-certificates
+    ca-certificates \
+    default-jre
 
 USER node
 
