@@ -139,4 +139,38 @@ describe('category unit tests', () => {
       expect(category.created_at).toBe(created_at);
     });
   });
+
+  describe('methods', () => {
+    test('update should update name and description', () => {
+      const arrange = {
+        name: 'movie updated',
+        description: 'description updated',
+      };
+      const category = new Category({
+        name: 'movie',
+        description: 'some description',
+      });
+      category.update(arrange.name, arrange.description);
+      expect(category.name).toBe(arrange.name);
+      expect(category.description).toBe(arrange.description);
+    });
+
+    test('activate should turn is_active into true', () => {
+      const category = new Category({
+        name: 'movie',
+        is_active: false,
+      });
+      category.activate();
+      expect(category.is_active).toBeTruthy();
+    });
+
+    test('deactivate should turn is_active into false', () => {
+      const category = new Category({
+        name: 'movie',
+        is_active: true,
+      });
+      category.deactivate();
+      expect(category.is_active).toBeFalsy();
+    });
+  });
 });
