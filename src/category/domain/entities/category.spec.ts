@@ -53,7 +53,6 @@ describe('category unit tests', () => {
       type CategoryData = { props: CategoryProperties; id?: UniqueEntityId };
       const data: CategoryData[] = [
         { props: { name: 'Movie' } },
-        { props: { name: 'Movie' }, id: null },
         { props: { name: 'Movie' }, id: undefined },
         {
           props: { name: 'Movie' },
@@ -85,19 +84,12 @@ describe('category unit tests', () => {
     });
   });
 
-  describe('getters and setters', () => {
+  describe('getters', () => {
     test('name getter', () => {
       const category = new Category({
         name: 'Movie',
       });
       expect(category.name).toBe('Movie');
-    });
-    test('name setter', () => {
-      const category = new Category({
-        name: 'Movie',
-      });
-      category['name'] = 'change movie';
-      expect(category.name).toBe('change movie');
     });
 
     test('description getter', () => {
@@ -110,20 +102,6 @@ describe('category unit tests', () => {
       category = new Category({
         name: 'Movie',
       });
-      expect(category.description).toBeNull();
-    });
-    test('description setter', () => {
-      const category = new Category({
-        name: 'Movie',
-      });
-
-      category['description'] = 'desc';
-      expect(category.description).toBe('desc');
-
-      category['description'] = undefined;
-      expect(category.description).toBeNull();
-
-      category['description'] = null;
       expect(category.description).toBeNull();
     });
 
@@ -144,17 +122,6 @@ describe('category unit tests', () => {
         is_active: false,
       });
       expect(category.is_active).toBeFalsy();
-    });
-    test('is_active setter', () => {
-      const category = new Category({
-        name: 'Movie',
-      });
-
-      category['is_active'] = false;
-      expect(category.is_active).toBeFalsy();
-
-      category['is_active'] = true;
-      expect(category.is_active).toBeTruthy();
     });
 
     test('created_at getter', () => {

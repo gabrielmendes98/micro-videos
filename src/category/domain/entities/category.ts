@@ -3,41 +3,34 @@ import { Entity } from 'shared/entity/entity';
 
 export type CategoryProperties = {
   name: string;
-  description?: string;
+  description?: string | null;
   is_active?: boolean;
   created_at?: Date;
 };
 
 export class Category extends Entity<CategoryProperties> {
-  constructor(public readonly props: CategoryProperties, id?: UniqueEntityId) {
+  public readonly props: Required<CategoryProperties> = {
+    name: '',
+    description: null,
+    is_active: true,
+    created_at: new Date(),
+  };
+
+  constructor(props: CategoryProperties, id?: UniqueEntityId) {
     super(props, id);
-    this.description = this.props.description;
-    this.is_active = this.props.is_active;
-    this.props.created_at = this.props.created_at ?? new Date();
+    this.props = Object.assign(this.props, props);
   }
 
   get name() {
     return this.props.name;
   }
 
-  private set name(value: string) {
-    this.props.name = value;
-  }
-
   get description() {
     return this.props.description;
   }
 
-  private set description(value: string) {
-    this.props.description = value ?? null;
-  }
-
   get is_active() {
     return this.props.is_active;
-  }
-
-  private set is_active(value: boolean) {
-    this.props.is_active = value ?? true;
   }
 
   get created_at() {
