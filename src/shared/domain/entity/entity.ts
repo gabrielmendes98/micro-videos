@@ -1,4 +1,4 @@
-import { UniqueEntityId } from '../domain/value-objects/unique-entity-id.vo';
+import { UniqueEntityId } from '../value-objects/unique-entity-id.vo';
 
 export abstract class Entity<Props> {
   public readonly uniqueEntityId: UniqueEntityId;

@@ -1,5 +1,5 @@
 import { UniqueEntityId } from 'shared/domain/value-objects/unique-entity-id.vo';
-import { Entity } from 'shared/entity/entity';
+import { Entity } from 'shared/domain/entity/entity';
 
 export type CategoryProperties = {
   name: string;
