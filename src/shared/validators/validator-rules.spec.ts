@@ -144,6 +144,42 @@ describe('ValidatorRules unit tests', () => {
       });
     });
 
+    it('should accept only string and array as value', () => {
+      let arrange: Values[] = [
+        { value: 1, property: 'field' },
+        { value: {}, property: 'field' },
+      ];
+      let error = new ValidationError(
+        'The field must be a string or array to use maxLength method'
+      );
+      arrange.forEach((item) => {
+        assertIsInvalid({
+          value: item.value,
+          property: item.property,
+          rule: 'maxLength',
+          error,
+          params: [5],
+        });
+      });
+
+      arrange = [
+        { value: '1', property: 'field' },
+        { value: [1, 2, 3], property: 'field' },
+      ];
+      error = new ValidationError(
+        'The field must be a string or array to use maxLength method'
+      );
+      arrange.forEach((item) => {
+        assertIsValid({
+          value: item.value,
+          property: item.property,
+          rule: 'maxLength',
+          error,
+          params: [5],
+        });
+      });
+    });
+
     it('should be valid', () => {
       const arrange: Values[] = [
         { value: '12345', property: 'field' },

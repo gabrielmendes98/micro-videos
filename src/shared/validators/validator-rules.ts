@@ -22,6 +22,15 @@ export class ValidatorRules {
   }
 
   maxLength(max: number): Omit<this, 'maxLength'> {
+    if (
+      !this.isEmpty() &&
+      typeof this.value !== 'string' &&
+      !Array.isArray(this.value)
+    ) {
+      throw new ValidationError(
+        `The ${this.property} must be a string or array to use maxLength method`
+      );
+    }
     if (!this.isEmpty() && this.value.length > max) {
       throw new ValidationError(
         `The ${this.property} must be less or equal than ${max} characters`
