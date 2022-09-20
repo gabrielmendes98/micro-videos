@@ -33,7 +33,7 @@ describe('Category integration tests', () => {
       arrange.forEach((item) => {
         expect(
           () => new Category({ name: item.value as any })
-        ).containErrorMessages({
+        ).toContainErrorMessages({
           name: item.messages,
         });
       });
@@ -54,7 +54,7 @@ describe('Category integration tests', () => {
       arrange.forEach((item) => {
         expect(
           () => new Category({ name: 'movie', description: item.value as any })
-        ).containErrorMessages({
+        ).toContainErrorMessages({
           description: item.messages,
         });
       });
@@ -75,7 +75,7 @@ describe('Category integration tests', () => {
       arrange.forEach((item) => {
         expect(
           () => new Category({ name: 'movie', is_active: item.value as any })
-        ).containErrorMessages({
+        ).toContainErrorMessages({
           is_active: item.messages,
         });
       });
@@ -134,7 +134,7 @@ describe('Category integration tests', () => {
         const category = new Category({ name: 'movie' });
         expect(() =>
           category.update(item.value as any, 'valid description')
-        ).containErrorMessages({
+        ).toContainErrorMessages({
           name: item.messages,
         });
       });
@@ -159,7 +159,7 @@ describe('Category integration tests', () => {
         });
         expect(() =>
           category.update('valid name', item.value as any)
-        ).containErrorMessages({
+        ).toContainErrorMessages({
           description: item.messages,
         });
       });

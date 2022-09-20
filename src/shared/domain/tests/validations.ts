@@ -28,7 +28,7 @@ function assertContainsErrorsMessages(
 }
 
 expect.extend({
-  containErrorMessages(expected: Expected, received: FieldErrors) {
+  toContainErrorMessages(expected: Expected, received: FieldErrors) {
     if (typeof expected === 'function') {
       try {
         return expected();

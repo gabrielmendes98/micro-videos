@@ -44,7 +44,7 @@ describe('CategoryValidator integration tests', () => {
         data: {
           name: item.value,
         },
-      }).containErrorMessages({
+      }).toContainErrorMessages({
         name: item.messages,
       });
     });
@@ -68,7 +68,7 @@ describe('CategoryValidator integration tests', () => {
         data: {
           description: item.value,
         },
-      }).containErrorMessages({
+      }).toContainErrorMessages({
         description: item.messages,
       });
     });
@@ -92,7 +92,7 @@ describe('CategoryValidator integration tests', () => {
         data: {
           is_active: item.value,
         },
-      }).containErrorMessages({
+      }).toContainErrorMessages({
         is_active: item.messages,
       });
     });
@@ -120,7 +120,7 @@ describe('CategoryValidator integration tests', () => {
         data: {
           created_at: item.value,
         },
-      }).containErrorMessages({
+      }).toContainErrorMessages({
         created_at: item.messages,
       });
     });
