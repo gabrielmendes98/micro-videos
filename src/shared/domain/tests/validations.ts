@@ -2,9 +2,9 @@ import { ClassValidatorFields } from '../validators/class-validator-fields';
 import { FieldErrors } from '../validators/validator-fields-interface';
 import { isMatch as testMatch } from 'lodash';
 
-type Expected<PropsValidated = any> = {
-  validator: ClassValidatorFields<PropsValidated>;
-  data: PropsValidated;
+type Expected = {
+  validator: ClassValidatorFields<any>;
+  data: any;
 };
 
 expect.extend({
