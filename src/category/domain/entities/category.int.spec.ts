@@ -1,4 +1,4 @@
-import { ValidationError } from 'shared/errors/validation.error';
+import { ValidationError } from 'shared/domain/errors/validation.error';
 import { Category } from './category';
 
 describe('Category integration tests', () => {
