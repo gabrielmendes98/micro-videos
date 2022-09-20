@@ -1,67 +1,83 @@
-import { ValidationError } from 'shared/domain/errors/validation.error';
+import { EntityValidationError } from 'shared/domain/errors/validation.error';
 import { Category } from './category';
 
 describe('Category integration tests', () => {
   describe('create/constructor', () => {
     it('should be a invalid category when create using invalid name field', () => {
       const arrange = [
-        { value: null, error: new ValidationError('The name is required') },
         {
-          value: undefined,
-          error: new ValidationError('The name is required'),
+          value: null,
+          messages: [
+            'name should not be empty',
+            'name must be a string',
+            'name must be shorter than or equal to 255 characters',
+          ],
         },
-        { value: '', error: new ValidationError('The name is required') },
         {
-          value: 't'.repeat(256),
-          error: new ValidationError(
-            'The name must be less or equal than 255 characters'
-          ),
+          value: '',
+          messages: ['name should not be empty'],
         },
-        { value: 5, error: new ValidationError('The name must be a string') },
+        {
+          value: 1,
+          messages: [
+            'name must be a string',
+            'name must be shorter than or equal to 255 characters',
+          ],
+        },
+        {
+          value: 'a'.repeat(256),
+          messages: ['name must be shorter than or equal to 255 characters'],
+        },
       ];
 
       arrange.forEach((item) => {
-        expect(() => new Category({ name: item.value as any })).toThrow(
-          item.error
-        );
+        expect(
+          () => new Category({ name: item.value as any })
+        ).containErrorMessages({
+          name: item.messages,
+        });
       });
     });
 
     it('should be a invalid category when create using invalid description field', () => {
       const arrange = [
         {
-          value: 5,
-          error: new ValidationError('The description must be a string'),
+          value: 10,
+          messages: ['description must be a string'],
         },
         {
-          value: [],
-          error: new ValidationError('The description must be a string'),
+          value: true,
+          messages: ['description must be a string'],
         },
       ];
 
       arrange.forEach((item) => {
         expect(
           () => new Category({ name: 'movie', description: item.value as any })
-        ).toThrow(item.error);
+        ).containErrorMessages({
+          description: item.messages,
+        });
       });
     });
 
     it('should be a invalid category when create using invalid is_active field', () => {
       const arrange = [
         {
-          value: '5',
-          error: new ValidationError('The is_active must be a boolean'),
+          value: 10,
+          messages: ['is_active must be a boolean value'],
         },
         {
-          value: {},
-          error: new ValidationError('The is_active must be a boolean'),
+          value: '',
+          messages: ['is_active must be a boolean value'],
         },
       ];
 
       arrange.forEach((item) => {
         expect(
           () => new Category({ name: 'movie', is_active: item.value as any })
-        ).toThrow(item.error);
+        ).containErrorMessages({
+          is_active: item.messages,
+        });
       });
     });
 
@@ -90,38 +106,49 @@ describe('Category integration tests', () => {
   describe('update method', () => {
     it('should be a invalid category when update using invalid name field', () => {
       const arrange = [
-        { value: null, error: new ValidationError('The name is required') },
         {
-          value: undefined,
-          error: new ValidationError('The name is required'),
+          value: null,
+          messages: [
+            'name should not be empty',
+            'name must be a string',
+            'name must be shorter than or equal to 255 characters',
+          ],
         },
-        { value: '', error: new ValidationError('The name is required') },
         {
-          value: 't'.repeat(256),
-          error: new ValidationError(
-            'The name must be less or equal than 255 characters'
-          ),
+          value: '',
+          messages: ['name should not be empty'],
         },
-        { value: 5, error: new ValidationError('The name must be a string') },
+        {
+          value: 1,
+          messages: [
+            'name must be a string',
+            'name must be shorter than or equal to 255 characters',
+          ],
+        },
+        {
+          value: 'a'.repeat(256),
+          messages: ['name must be shorter than or equal to 255 characters'],
+        },
       ];
-
       arrange.forEach((item) => {
         const category = new Category({ name: 'movie' });
         expect(() =>
           category.update(item.value as any, 'valid description')
-        ).toThrow(item.error);
+        ).containErrorMessages({
+          name: item.messages,
+        });
       });
     });
 
     it('should be a invalid category when update using invalid description field', () => {
       const arrange = [
         {
-          value: 5,
-          error: new ValidationError('The description must be a string'),
+          value: 10,
+          messages: ['description must be a string'],
         },
         {
-          value: [],
-          error: new ValidationError('The description must be a string'),
+          value: true,
+          messages: ['description must be a string'],
         },
       ];
 
@@ -130,9 +157,11 @@ describe('Category integration tests', () => {
           name: 'movie',
           description: 'valid description',
         });
-        expect(() => category.update('valid name', item.value as any)).toThrow(
-          item.error
-        );
+        expect(() =>
+          category.update('valid name', item.value as any)
+        ).containErrorMessages({
+          description: item.messages,
+        });
       });
     });
 
