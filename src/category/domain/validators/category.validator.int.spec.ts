@@ -50,6 +50,82 @@ describe('CategoryValidator integration tests', () => {
     });
   });
 
+  test('invalidation cases for description field', () => {
+    const arrange = [
+      {
+        value: 10,
+        messages: ['description must be a string'],
+      },
+      {
+        value: true,
+        messages: ['description must be a string'],
+      },
+    ];
+
+    arrange.forEach((item) => {
+      expect({
+        validator,
+        data: {
+          description: item.value,
+        },
+      }).containErrorMessages({
+        description: item.messages,
+      });
+    });
+  });
+
+  test('invalidation cases for is_active field', () => {
+    const arrange = [
+      {
+        value: 10,
+        messages: ['is_active must be a boolean value'],
+      },
+      {
+        value: '',
+        messages: ['is_active must be a boolean value'],
+      },
+    ];
+
+    arrange.forEach((item) => {
+      expect({
+        validator,
+        data: {
+          is_active: item.value,
+        },
+      }).containErrorMessages({
+        is_active: item.messages,
+      });
+    });
+  });
+
+  test('invalidation cases for created_at field', () => {
+    const arrange = [
+      {
+        value: 10,
+        messages: ['created_at must be a Date instance'],
+      },
+      {
+        value: {},
+        messages: ['created_at must be a Date instance'],
+      },
+      {
+        value: '',
+        messages: ['created_at must be a Date instance'],
+      },
+    ];
+
+    arrange.forEach((item) => {
+      expect({
+        validator,
+        data: {
+          created_at: item.value,
+        },
+      }).containErrorMessages({
+        created_at: item.messages,
+      });
+    });
+  });
+
   test('valid cases for all fields', () => {
     const arrange = [
       { name: 'some name' },
