@@ -1,7 +1,10 @@
 import { Entity } from 'shared/domain/entity/entity';
 import { NotFoundError } from 'shared/domain/errors/not-found.error';
 import { UniqueEntityId } from 'shared/domain/value-objects/unique-entity-id.vo';
-import { InMemoryRepository } from '../in-memory.repository';
+import {
+  InMemoryRepository,
+  InMemorySearchableRepository,
+} from '../in-memory.repository';
 
 type StubEntityProps = {
   name: string;
@@ -108,4 +111,120 @@ describe('InMemoryRepository unit tests', () => {
     await repository.delete(entity.uniqueEntityId);
     expect(repository.items).toHaveLength(0);
   });
+});
+
+class StubInMemorySearchableRepository extends InMemorySearchableRepository<StubEntity> {
+  sortableFields: string[] = ['name'];
+
+  protected async applyFilter(
+    items: StubEntity[],
+    filter: string | null
+  ): Promise<StubEntity[]> {
+    if (!filter) {
+      return items;
+    }
+
+    return items.filter(
+      (item) =>
+        item.props.name.toLowerCase().includes(filter.toLowerCase()) ||
+        item.props.price.toString() === filter
+    );
+  }
+}
+
+describe('InMemorySearchableRepository unit tests', () => {
+  let repository: StubInMemorySearchableRepository;
+
+  beforeEach(() => {
+    repository = new StubInMemorySearchableRepository();
+  });
+
+  describe('applyFilter method', () => {
+    it('should do not filter items when filter param is null', async () => {
+      const items = [new StubEntity({ name: 'some name', price: 10 })];
+      const spyFilter = jest.spyOn(items, 'filter');
+      const filteredItems = await repository['applyFilter'](items, null);
+      expect(spyFilter).not.toHaveBeenCalled();
+      expect(items).toStrictEqual(filteredItems);
+    });
+
+    it('should filter using a filter param', async () => {
+      const items = [
+        new StubEntity({ name: 'test', price: 10 }),
+        new StubEntity({ name: 'TEST', price: 0 }),
+        new StubEntity({ name: 'fake', price: 10 }),
+      ];
+
+      const spyFilterMethod = jest.spyOn(items, 'filter');
+
+      let itemsFiltered = await repository['applyFilter'](items, 'TEST');
+      expect(itemsFiltered).toStrictEqual([items[0], items[1]]);
+      expect(spyFilterMethod).toHaveBeenCalledTimes(1);
+
+      itemsFiltered = await repository['applyFilter'](items, '10');
+      expect(itemsFiltered).toStrictEqual([items[0], items[2]]);
+      expect(spyFilterMethod).toHaveBeenCalledTimes(2);
+
+      itemsFiltered = await repository['applyFilter'](items, 'no-filter');
+      expect(itemsFiltered).toHaveLength(0);
+      expect(spyFilterMethod).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  describe('applySort method', () => {
+    it('should do not sort items when sort param is null or not in sortableFields', async () => {
+      const items = [
+        new StubEntity({ name: 'test', price: 10 }),
+        new StubEntity({ name: 'TEST', price: 0 }),
+        new StubEntity({ name: 'fake', price: 10 }),
+      ];
+
+      let sortedItems = await repository['applySort'](items, null, null);
+      expect(sortedItems).toStrictEqual(items);
+
+      sortedItems = await repository['applySort'](items, 'price', 'asc');
+      expect(sortedItems).toStrictEqual(items);
+    });
+
+    it('should sort using valid sort param', async () => {
+      const items = [
+        new StubEntity({ name: 'zaza', price: 10 }),
+        new StubEntity({ name: 'abab', price: 0 }),
+        new StubEntity({ name: 'dodo', price: 10 }),
+      ];
+
+      let sortedItems = await repository['applySort'](items, 'name', 'asc');
+      expect(sortedItems).toStrictEqual([items[1], items[2], items[0]]);
+
+      sortedItems = await repository['applySort'](items, 'name', 'desc');
+      expect(sortedItems).toStrictEqual([items[0], items[2], items[1]]);
+    });
+  });
+
+  describe('applyPaginate method', () => {
+    it('should paginate items correctly', async () => {
+      const items = [
+        new StubEntity({ name: 'aaa', price: 10 }),
+        new StubEntity({ name: 'bbb', price: 0 }),
+        new StubEntity({ name: 'ccc', price: 5 }),
+        new StubEntity({ name: 'ddd', price: 3 }),
+        new StubEntity({ name: 'eee', price: 2 }),
+        new StubEntity({ name: 'fff', price: 8 }),
+      ];
+
+      let paginatedItems = await repository['applyPaginate'](items, 0, 3);
+      expect(paginatedItems).toStrictEqual([items[0], items[1], items[2]]);
+
+      paginatedItems = await repository['applyPaginate'](items, 1, 3);
+      expect(paginatedItems).toStrictEqual([items[0], items[1], items[2]]);
+
+      paginatedItems = await repository['applyPaginate'](items, 2, 3);
+      expect(paginatedItems).toStrictEqual([items[3], items[4], items[5]]);
+
+      paginatedItems = await repository['applyPaginate'](items, 3, 3);
+      expect(paginatedItems).toStrictEqual([]);
+    });
+  });
+
+  describe('search method', () => {});
 });
