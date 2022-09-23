@@ -1,4 +1,4 @@
-import { SearchParams } from '../repository-contracts';
+import { SearchParams, SearchResult } from '../repository-contracts';
 
 describe('SearchParams unit tests', () => {
   test('page prop', () => {
@@ -151,5 +151,87 @@ describe('SearchParams unit tests', () => {
         i.expected
       );
     });
+  });
+});
+
+describe('SearchResultProps unit tests', () => {
+  test('constructor props', () => {
+    const arrange = [
+      {
+        props: {
+          items: ['entity1', 'entity2'] as any,
+          total: 4,
+          current_page: 1,
+          per_page: 2,
+          sort: null,
+          sort_dir: null,
+          filter: null,
+        },
+        expect: {
+          items: ['entity1', 'entity2'] as any,
+          total: 4,
+          current_page: 1,
+          per_page: 2,
+          last_page: 2,
+          sort: null,
+          sort_dir: null,
+          filter: null,
+        },
+      },
+      {
+        props: {
+          items: ['entity1', 'entity2'] as any,
+          total: 4,
+          current_page: 1,
+          per_page: 2,
+          sort: 'name',
+          sort_dir: 'asc',
+          filter: 'test',
+        },
+        expect: {
+          items: ['entity1', 'entity2'] as any,
+          total: 4,
+          current_page: 1,
+          per_page: 2,
+          last_page: 2,
+          sort: 'name',
+          sort_dir: 'asc',
+          filter: 'test',
+        },
+      },
+    ];
+
+    arrange.forEach((item) => {
+      const searchResult = new SearchResult(item.props);
+      expect(searchResult.toJSON()).toStrictEqual(item.expect);
+    });
+  });
+
+  it('should set last_page to 1 when per_page field is greater than total field', () => {
+    const result = new SearchResult({
+      items: [] as any,
+      total: 4,
+      current_page: 1,
+      per_page: 15,
+      sort: 'name',
+      sort_dir: 'asc',
+      filter: 'test',
+    });
+
+    expect(result.last_page).toBe(1);
+  });
+
+  test('last_page prop should be correctly calculated when total is not a multiple of per_page', () => {
+    const result = new SearchResult({
+      items: [] as any,
+      total: 101,
+      current_page: 1,
+      per_page: 20,
+      sort: 'name',
+      sort_dir: 'asc',
+      filter: 'test',
+    });
+
+    expect(result.last_page).toBe(6);
   });
 });
