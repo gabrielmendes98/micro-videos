@@ -27,12 +27,12 @@ export class SearchParams<Filter = string> {
   protected _sort_dir: SortDirection | null = null;
   protected _filter: Filter | null = null;
 
-  constructor(props: SearchProps = {}) {
+  constructor(props: SearchProps<Filter> = {}) {
     this.page = props.page;
     this.per_page = props.per_page;
     this.sort = props.sort;
     this.sort_dir = props.sort_dir;
-    this.filter = props.filter as Filter | null | undefined;
+    this.filter = props.filter;
   }
 
   get page(): number {
@@ -97,9 +97,9 @@ export class SearchParams<Filter = string> {
 
   private set filter(value: Filter | null | undefined) {
     this._filter =
-      value === null || value === undefined || value === ''
+      value === null || value === undefined || String(value) === ''
         ? null
-        : (String(value) as Filter);
+        : (String(value) as unknown as Filter);
   }
 }
 
