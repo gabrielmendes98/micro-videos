@@ -1,13 +1,11 @@
-import { Category } from 'category/domain/entities/category';
 import { CategoryRepository } from 'category/domain/repositories/category.repository';
 import { CategoryOutput } from '../dto/category-output.dto';
 
-export class CreateCategoryUseCase {
+export class GetCategoryUseCase {
   constructor(private categoryRepository: CategoryRepository.Repository) {}
 
   async execute(input: Input): Promise<Output> {
-    const entity = new Category(input);
-    await this.categoryRepository.insert(entity);
+    const entity = await this.categoryRepository.findById(input.id);
     return {
       id: entity.id,
       name: entity.name,
@@ -19,9 +17,7 @@ export class CreateCategoryUseCase {
 }
 
 export type Input = {
-  name: string;
-  description?: string;
-  is_active?: boolean;
+  id: string;
 };
 
 export type Output = CategoryOutput;
