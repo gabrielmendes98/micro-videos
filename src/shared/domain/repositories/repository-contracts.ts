@@ -113,7 +113,7 @@ export type SearchResultProps<E extends Entity, Filter = string> = {
   filter: Filter | null;
 };
 
-export class SearchResult<E extends Entity, Filter = string> {
+export class SearchResult<E extends Entity = Entity, Filter = string> {
   readonly items: E[];
   readonly total: number;
   readonly current_page: number;
@@ -128,7 +128,7 @@ export class SearchResult<E extends Entity, Filter = string> {
     this.total = props.total;
     this.current_page = props.current_page;
     this.per_page = props.per_page;
-    this.last_page = Math.ceil(this.total / this.per_page);
+    this.last_page = Math.ceil(this.total / this.per_page) || 1;
     this.sort = props.sort;
     this.sort_dir = props.sort_dir;
     this.filter = props.filter;
