@@ -1,0 +1,30 @@
+import { Category } from 'category/domain/entities/category';
+import { CategoryInMemoryRepository } from 'category/infra/repositories/category-in-memory.repository';
+import { NotFoundError } from 'shared/domain/errors/not-found.error';
+import { DeleteCategoryUseCase } from '../delete-category.use-case';
+
+describe('DeleteCategoryUseCase unit tests', () => {
+  let useCase: DeleteCategoryUseCase;
+  let repository: CategoryInMemoryRepository;
+
+  beforeEach(() => {
+    repository = new CategoryInMemoryRepository();
+    useCase = new DeleteCategoryUseCase(repository);
+  });
+
+  it('should throw error when entity not found', async () => {
+    expect(() => useCase.execute({ id: 'test id' })).rejects.toThrow(
+      new NotFoundError('Entity not found using ID test id')
+    );
+  });
+
+  it('should delete category when exists', async () => {
+    const category = new Category({ name: 'movie' });
+    repository.items = [category];
+    const spyDelete = jest.spyOn(repository, 'delete');
+    await useCase.execute({ id: category.id });
+
+    expect(spyDelete).toHaveBeenCalled();
+    expect(repository.items).toStrictEqual([]);
+  });
+});
