@@ -58,13 +58,13 @@ export class Category extends Entity<CategoryProperties> {
     return this.props.created_at;
   }
 
-  update(name: string, description: string) {
+  update(name: string, description?: string) {
     Category.validate({
       name,
       description,
     });
     this.props.name = name;
-    this.props.description = description;
+    this.props.description = description ?? null;
   }
 
   activate() {

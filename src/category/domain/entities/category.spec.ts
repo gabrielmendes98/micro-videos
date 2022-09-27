@@ -161,6 +161,20 @@ describe('category unit tests', () => {
       expect(category.description).toBe(arrange.description);
     });
 
+    test('update should update description to null when not passed', () => {
+      const arrange = {
+        name: 'movie updated',
+      };
+      const category = new Category({
+        name: 'movie',
+        description: 'some description',
+      });
+      category.update(arrange.name);
+      expect(Category.validate).toHaveBeenCalledTimes(2); // constructor and update
+      expect(category.name).toBe(arrange.name);
+      expect(category.description).toBeNull();
+    });
+
     test('activate should turn is_active into true', () => {
       const category = new Category({
         name: 'movie',
