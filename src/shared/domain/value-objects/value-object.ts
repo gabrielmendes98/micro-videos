@@ -13,14 +13,10 @@ export abstract class ValueObject<Value = any> {
 
   toString = () => {
     if (typeof this.value !== 'object' || this.value === null) {
-      try {
-        return this.value.toString();
-      } catch (e) {
-        return this.value + '';
-      }
+      return String(this.value);
     }
 
-    const valueStr = this.value.toString();
+    const valueStr = String(this.value);
     return valueStr === '[object Object]'
       ? JSON.stringify(this.value)
       : valueStr;
