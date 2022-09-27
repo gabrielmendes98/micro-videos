@@ -1,5 +1,4 @@
 import {
-  RepositoryInterface,
   SearchableRepositoryInterface,
   SearchParams as BaseSearchParams,
   SearchResult as BaseSearchResult,

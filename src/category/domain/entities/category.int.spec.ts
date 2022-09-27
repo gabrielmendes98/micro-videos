@@ -1,4 +1,3 @@
-import { EntityValidationError } from 'shared/domain/errors/validation.error';
 import { Category } from './category';
 
 describe('Category integration tests', () => {
@@ -32,7 +31,7 @@ describe('Category integration tests', () => {
 
       arrange.forEach((item) => {
         expect(
-          () => new Category({ name: item.value as any })
+          () => new Category({ name: item.value as any }),
         ).toContainErrorMessages({
           name: item.messages,
         });
@@ -53,7 +52,7 @@ describe('Category integration tests', () => {
 
       arrange.forEach((item) => {
         expect(
-          () => new Category({ name: 'movie', description: item.value as any })
+          () => new Category({ name: 'movie', description: item.value as any }),
         ).toContainErrorMessages({
           description: item.messages,
         });
@@ -74,7 +73,7 @@ describe('Category integration tests', () => {
 
       arrange.forEach((item) => {
         expect(
-          () => new Category({ name: 'movie', is_active: item.value as any })
+          () => new Category({ name: 'movie', is_active: item.value as any }),
         ).toContainErrorMessages({
           is_active: item.messages,
         });
@@ -133,7 +132,7 @@ describe('Category integration tests', () => {
       arrange.forEach((item) => {
         const category = new Category({ name: 'movie' });
         expect(() =>
-          category.update(item.value as any, 'valid description')
+          category.update(item.value as any, 'valid description'),
         ).toContainErrorMessages({
           name: item.messages,
         });
@@ -158,7 +157,7 @@ describe('Category integration tests', () => {
           description: 'valid description',
         });
         expect(() =>
-          category.update('valid name', item.value as any)
+          category.update('valid name', item.value as any),
         ).toContainErrorMessages({
           description: item.messages,
         });

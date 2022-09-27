@@ -359,7 +359,7 @@ describe('InMemorySearchableRepository unit tests', () => {
       ];
 
       for (const i of arrange) {
-        let result = await repository.search(new SearchParams(i.params));
+        const result = await repository.search(new SearchParams(i.params));
         expect(result).toStrictEqual(new SearchResult(i.result));
       }
     });
@@ -430,7 +430,7 @@ describe('InMemorySearchableRepository unit tests', () => {
       ];
 
       for (const i of arrange) {
-        let result = await repository.search(new SearchParams(i.params));
+        const result = await repository.search(new SearchParams(i.params));
         expect(result).toStrictEqual(new SearchResult(i.result));
       }
     });

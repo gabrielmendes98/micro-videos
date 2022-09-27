@@ -1,7 +1,6 @@
 import { Category } from 'category/domain/entities/category';
 import { CategoryRepository } from 'category/domain/repositories/category.repository';
 import { CategoryInMemoryRepository } from 'category/infra/repositories/category-in-memory.repository';
-import { SearchParams } from 'shared/domain/repositories/repository-contracts';
 import {
   Input,
   ListCategoriesUseCase,

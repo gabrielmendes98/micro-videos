@@ -2,7 +2,7 @@ import { Category } from 'category/domain/entities/category';
 import { CategoryInMemoryRepository } from './category-in-memory.repository';
 
 describe('CategoryInMemoryRepository unit tests', () => {
-  let items: Category[] = [
+  const items: Category[] = [
     new Category({
       name: 'movie',
       created_at: new Date('2022-02-19T00:00:00Z'),
