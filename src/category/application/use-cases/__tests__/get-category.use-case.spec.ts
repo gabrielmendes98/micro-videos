@@ -1,6 +1,6 @@
-import { Category } from 'category/domain/entities/category';
-import { CategoryInMemoryRepository } from 'category/infra/repositories/category-in-memory.repository';
-import { NotFoundError } from 'shared/domain/errors/not-found.error';
+import { Category } from '#category/domain/entities/category';
+import { CategoryInMemoryRepository } from '#category/infra/repositories/category-in-memory.repository';
+import { NotFoundError } from '#shared/domain/errors/not-found.error';
 import { GetCategoryUseCase } from '../get-category.use-case';
 
 describe('GetCategoryUseCase unit tests', () => {

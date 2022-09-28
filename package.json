@@ -38,5 +38,16 @@
     "class-validator": "^0.13.2",
     "lodash": "^4.17.21",
     "uuid": "^9.0.0"
+  },
+  "imports": {
+    "#shared/*": "./dist/shared/*.js",
+    "#category/*": "./dist/category/*.js"
+  },
+  "exports": {
+    "./shared/application": "./dist/shared/application/index.js",
+    "./shared/domain": "./dist/shared/domain/index.js",
+    "./category/application": "./dist/category/application/index.js",
+    "./category/domain": "./dist/category/domain/index.js",
+    "./category/infra": "./dist/category/infra/index.js"
   }
 }

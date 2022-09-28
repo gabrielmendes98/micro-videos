@@ -1,4 +1,4 @@
-import { SearchResult } from 'shared/domain/repositories/repository-contracts';
+import { SearchResult } from '#shared/domain/repositories/repository-contracts';
 
 export type ListOutputDto<ItemDto = any> = {
   items: ItemDto[];

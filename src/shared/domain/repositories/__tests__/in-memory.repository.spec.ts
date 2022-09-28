@@ -1,6 +1,6 @@
-import { Entity } from 'shared/domain/entity/entity';
-import { NotFoundError } from 'shared/domain/errors/not-found.error';
-import { UniqueEntityId } from 'shared/domain/value-objects/unique-entity-id.vo';
+import { Entity } from '#shared/domain/entity/entity';
+import { NotFoundError } from '#shared/domain/errors/not-found.error';
+import { UniqueEntityId } from '#shared/domain/value-objects/unique-entity-id.vo';
 import {
   InMemoryRepository,
   InMemorySearchableRepository,

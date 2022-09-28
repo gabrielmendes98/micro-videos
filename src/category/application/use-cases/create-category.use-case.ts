@@ -1,6 +1,6 @@
-import { Category } from 'category/domain/entities/category';
-import { CategoryRepository } from 'category/domain/repositories/category.repository';
-import { UseCase } from 'shared/application/use-case';
+import { UseCase } from '#shared/application/use-case';
+import { Category } from '#category/domain/entities/category';
+import { CategoryRepository } from '#category/domain/repositories/category.repository';
 import {
   CategoryOutputDto,
   CategoryOutputDtoMapper,

@@ -1,5 +1,5 @@
-import { Entity } from 'shared/domain/entity/entity';
-import { SearchResult } from 'shared/domain/repositories/repository-contracts';
+import { Entity } from '#shared/domain/entity/entity';
+import { SearchResult } from '#shared/domain/repositories/repository-contracts';
 import { ListOutputDtoMapper } from './list-output.dto';
 
 class StubEntity extends Entity {

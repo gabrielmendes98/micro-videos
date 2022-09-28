@@ -1,7 +1,7 @@
-import { Category } from 'category/domain/entities/category';
-import { CategoryRepository } from 'category/domain/repositories/category.repository';
-import { InMemorySearchableRepository } from 'shared/domain/repositories/in-memory.repository';
-import { SortDirection } from 'shared/domain/repositories/repository-contracts';
+import { Category } from '#category/domain/entities/category';
+import { CategoryRepository } from '#category/domain/repositories/category.repository';
+import { InMemorySearchableRepository } from '#shared/domain/repositories/in-memory.repository';
+import { SortDirection } from '#shared/domain/repositories/repository-contracts';
 
 export class CategoryInMemoryRepository
   extends InMemorySearchableRepository<Category>
