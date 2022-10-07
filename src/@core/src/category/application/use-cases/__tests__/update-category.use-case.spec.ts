@@ -1,19 +1,15 @@
 import { Category } from '#category/domain/entities/category';
 import { CategoryInMemoryRepository } from '#category/infra/repositories/category-in-memory.repository';
 import { NotFoundError } from '#shared/domain/errors/not-found.error';
-import {
-  Input,
-  Output,
-  UpdateCategoryUseCase,
-} from '../update-category.use-case';
+import { UpdateCategoryUseCase } from '../update-category.use-case';
 
 describe('CreateCategoryUseCase unit tests', () => {
-  let useCase: UpdateCategoryUseCase;
+  let useCase: UpdateCategoryUseCase.UseCase;
   let repository: CategoryInMemoryRepository;
 
   beforeEach(() => {
     repository = new CategoryInMemoryRepository();
-    useCase = new UpdateCategoryUseCase(repository);
+    useCase = new UpdateCategoryUseCase.UseCase(repository);
   });
 
   it('should throw error when entity not found', async () => {
@@ -22,7 +18,7 @@ describe('CreateCategoryUseCase unit tests', () => {
         id: 'test id',
         name: 'movie',
         description: 'some desc',
-      })
+      }),
     ).rejects.toThrow(new NotFoundError('Entity not found using ID test id'));
   });
 
@@ -32,7 +28,10 @@ describe('CreateCategoryUseCase unit tests', () => {
     const category = new Category({ name: 'test' });
     repository.items = [category];
 
-    const arrange: { input: Input; output: Output }[] = [
+    const arrange: {
+      input: UpdateCategoryUseCase.Input;
+      output: UpdateCategoryUseCase.Output;
+    }[] = [
       {
         input: { name: 'movie', description: 'some desc', id: category.id },
         output: {

@@ -1,19 +1,15 @@
 import { Category } from '#category/domain/entities/category';
 import { CategoryRepository } from '#category/domain/repositories/category.repository';
 import { CategoryInMemoryRepository } from '#category/infra/repositories/category-in-memory.repository';
-import {
-  Input,
-  ListCategoriesUseCase,
-  Output,
-} from '../list-categories.use-case';
+import { ListCategoriesUseCase } from '../list-categories.use-case';
 
 describe('ListCategoriesUseCase unit tests', () => {
-  let useCase: ListCategoriesUseCase;
+  let useCase: ListCategoriesUseCase.UseCase;
   let repository: CategoryInMemoryRepository;
 
   beforeEach(() => {
     repository = new CategoryInMemoryRepository();
-    useCase = new ListCategoriesUseCase(repository);
+    useCase = new ListCategoriesUseCase.UseCase(repository);
   });
 
   test('toOutput method', async () => {
@@ -97,7 +93,10 @@ describe('ListCategoriesUseCase unit tests', () => {
     ];
     repository.items = items;
 
-    const arrange: { input: Input; output: Output }[] = [
+    const arrange: {
+      input: ListCategoriesUseCase.Input;
+      output: ListCategoriesUseCase.Output;
+    }[] = [
       {
         input: {
           filter: 'test',

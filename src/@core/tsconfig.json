@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": "src",
+    "strictNullChecks": true,
+    "paths": {
+      "#shared/*": ["./shared/*"],
+      "#category/*": ["./category/*"]
+    },
+    "outDir": "./dist"
+  },
+  "include": ["./src/"]
+}
