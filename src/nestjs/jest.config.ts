@@ -13,8 +13,8 @@ export default {
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
   moduleNameMapper: {
-    '^core/(.*)$': '<rootDir>/../../../node_modules/core/dist/$1',
-    '#shared/(.*)$': '<rootDir>/../../../node_modules/core/dist/shared/$1',
-    '#category/(.*)$': '<rootDir>/../../../node_modules/core/dist/category/$1',
+    '^core/(.*)$': '<rootDir>/../../@core/src/$1',
+    '#shared/(.*)$': '<rootDir>/../../@core/src/shared/$1',
+    '#category/(.*)$': '<rootDir>/../../@core/src/category/$1',
   },
 };
