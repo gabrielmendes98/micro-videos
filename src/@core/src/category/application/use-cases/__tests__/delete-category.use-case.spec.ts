@@ -1,5 +1,5 @@
 import { Category } from '#category/domain/entities/category';
-import { CategoryInMemoryRepository } from '#category/infra/repositories/category-in-memory.repository';
+import { CategoryInMemoryRepository } from '#category/infra';
 import { NotFoundError } from '#shared/domain/errors/not-found.error';
 import { DeleteCategoryUseCase } from '../delete-category.use-case';
 
