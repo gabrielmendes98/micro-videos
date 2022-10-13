@@ -27,7 +27,10 @@ class StubModel extends Model {
   }));
 
   static factory() {
-    return new SequelizeModelFactory(StubModel, StubModel.mockFactory);
+    return new SequelizeModelFactory<StubModel, { id: string; name: string }>(
+      StubModel,
+      StubModel.mockFactory,
+    );
   }
 }
 
@@ -58,12 +61,12 @@ describe('SequelizeModelFactory integration tests', () => {
   });
 
   test('make method', async () => {
-    let model = await StubModel.factory().make();
+    let model = StubModel.factory().make();
     expect(uuidValidate(model.id)).toBeTruthy();
     expect(model.name).not.toBeNull();
     expect(StubModel.mockFactory).toHaveBeenCalled();
 
-    model = await StubModel.factory().make({
+    model = StubModel.factory().make({
       id: 'dd2d887b-6403-4519-add4-81575076e105',
       name: 'test',
     });
@@ -131,14 +134,14 @@ describe('SequelizeModelFactory integration tests', () => {
   });
 
   test('bulkMake method using count = 1', async () => {
-    let models = await StubModel.factory().bulkMake();
+    let models = StubModel.factory().bulkMake();
 
     expect(models).toHaveLength(1);
     expect(models[0].id).not.toBeNull();
     expect(models[0].name).not.toBeNull();
     expect(StubModel.mockFactory).toHaveBeenCalled();
 
-    models = await StubModel.factory().bulkMake(() => ({
+    models = StubModel.factory().bulkMake(() => ({
       id: 'dd2d887b-6403-4519-add4-81575076e105',
       name: 'test',
     }));
@@ -150,7 +153,7 @@ describe('SequelizeModelFactory integration tests', () => {
   });
 
   test('bulkMake method using count > 1', async () => {
-    let models = await StubModel.factory().count(2).bulkMake();
+    let models = StubModel.factory().count(2).bulkMake();
 
     expect(models).toHaveLength(2);
     expect(models[0].id).not.toBeNull();
@@ -160,7 +163,7 @@ describe('SequelizeModelFactory integration tests', () => {
     expect(models[0].id).not.toBe(models[1].id);
     expect(StubModel.mockFactory).toHaveBeenCalled();
 
-    models = await StubModel.factory()
+    models = StubModel.factory()
       .count(2)
       .bulkMake(() => ({
         id: chance.guid({ version: 4 }),

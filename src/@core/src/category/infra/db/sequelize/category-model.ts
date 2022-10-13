@@ -7,7 +7,7 @@ import {
   Model,
 } from 'sequelize-typescript';
 
-type CategoryModelProperties = {
+type CategoryModelProps = {
   id: string;
   name: string;
   description: string | null;
@@ -19,7 +19,7 @@ type CategoryModelProperties = {
   tableName: 'categories',
   timestamps: false,
 })
-export class CategoryModel extends Model<CategoryModelProperties> {
+export class CategoryModel extends Model<CategoryModelProps> {
   @PrimaryKey
   @Column({ type: DataType.UUID })
   declare id: string;
@@ -39,12 +39,15 @@ export class CategoryModel extends Model<CategoryModelProperties> {
   static factory() {
     // using require to use chance just in development mode.
     const chance: Chance.Chance = require('chance')();
-    return new SequelizeModelFactory(CategoryModel, () => ({
-      id: chance.guid({ version: 4 }),
-      name: chance.word(),
-      description: chance.paragraph(),
-      is_active: chance.bool(),
-      created_at: chance.date(),
-    }));
+    return new SequelizeModelFactory<CategoryModel, CategoryModelProps>(
+      CategoryModel,
+      () => ({
+        id: chance.guid({ version: 4 }),
+        name: chance.word(),
+        description: chance.paragraph(),
+        is_active: chance.bool(),
+        created_at: chance.date(),
+      }),
+    );
   }
 }
