@@ -1,3 +1,4 @@
+import { SequelizeModelFactory } from '#shared/infra/sequelize/sequelize-model-factory';
 import {
   Column,
   DataType,
@@ -34,4 +35,16 @@ export class CategoryModel extends Model<CategoryModelProperties> {
 
   @Column({ allowNull: false, type: DataType.DATE })
   declare created_at: Date;
+
+  static factory() {
+    // using require to use chance just in development mode.
+    const chance: Chance.Chance = require('chance')();
+    return new SequelizeModelFactory(CategoryModel, () => ({
+      id: chance.guid({ version: 4 }),
+      name: chance.word(),
+      description: chance.paragraph(),
+      is_active: chance.bool(),
+      created_at: chance.date(),
+    }));
+  }
 }
