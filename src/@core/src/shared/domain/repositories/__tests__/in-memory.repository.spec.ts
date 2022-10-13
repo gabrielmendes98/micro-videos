@@ -29,19 +29,19 @@ describe('InMemoryRepository unit tests', () => {
     expect(entity.toJSON()).toStrictEqual(repository.items[0].toJSON());
   });
 
-  test('findById should throw error when entity not found', () => {
-    expect(repository.findById('fake id')).rejects.toThrow(
-      new NotFoundError('Entity not found using ID fake id')
+  test('findById should throw error when entity not found', async () => {
+    await expect(repository.findById('fake id')).rejects.toThrow(
+      new NotFoundError('Entity not found using ID fake id'),
     );
 
-    expect(
+    await expect(
       repository.findById(
-        new UniqueEntityId('dd2d887b-6403-4519-add4-81575076e105')
-      )
+        new UniqueEntityId('dd2d887b-6403-4519-add4-81575076e105'),
+      ),
     ).rejects.toThrow(
       new NotFoundError(
-        `Entity not found using ID dd2d887b-6403-4519-add4-81575076e105`
-      )
+        `Entity not found using ID dd2d887b-6403-4519-add4-81575076e105`,
+      ),
     );
   });
 
@@ -68,7 +68,7 @@ describe('InMemoryRepository unit tests', () => {
     const entity = new StubEntity({ name: 'bla bla', price: 10 });
 
     expect(repository.update(entity)).rejects.toThrow(
-      new NotFoundError(`Entity not found using ID ${entity.id}`)
+      new NotFoundError(`Entity not found using ID ${entity.id}`),
     );
   });
 
@@ -78,7 +78,7 @@ describe('InMemoryRepository unit tests', () => {
 
     const newEntity = new StubEntity(
       { name: 'name updated', price: 2 },
-      entity.uniqueEntityId
+      entity.uniqueEntityId,
     );
 
     await repository.update(newEntity);
@@ -87,17 +87,17 @@ describe('InMemoryRepository unit tests', () => {
 
   test('delete should throw error when entity not found', () => {
     expect(repository.delete('fake id')).rejects.toThrow(
-      new NotFoundError('Entity not found using ID fake id')
+      new NotFoundError('Entity not found using ID fake id'),
     );
 
     expect(
       repository.delete(
-        new UniqueEntityId('dd2d887b-6403-4519-add4-81575076e105')
-      )
+        new UniqueEntityId('dd2d887b-6403-4519-add4-81575076e105'),
+      ),
     ).rejects.toThrow(
       new NotFoundError(
-        `Entity not found using ID dd2d887b-6403-4519-add4-81575076e105`
-      )
+        `Entity not found using ID dd2d887b-6403-4519-add4-81575076e105`,
+      ),
     );
   });
 
@@ -119,7 +119,7 @@ class StubInMemorySearchableRepository extends InMemorySearchableRepository<Stub
 
   protected async applyFilter(
     items: StubEntity[],
-    filter: string | null
+    filter: string | null,
   ): Promise<StubEntity[]> {
     if (!filter) {
       return items;
@@ -128,7 +128,7 @@ class StubInMemorySearchableRepository extends InMemorySearchableRepository<Stub
     return items.filter(
       (item) =>
         item.props.name.toLowerCase().includes(filter.toLowerCase()) ||
-        item.props.price.toString() === filter
+        item.props.price.toString() === filter,
     );
   }
 }
@@ -243,7 +243,7 @@ describe('InMemorySearchableRepository unit tests', () => {
           sort: null,
           sort_dir: null,
           filter: null,
-        })
+        }),
       );
     });
 
@@ -257,7 +257,7 @@ describe('InMemorySearchableRepository unit tests', () => {
       repository.items = items;
 
       let result = await repository.search(
-        new SearchParams({ page: 1, per_page: 2, filter: 'TEST' })
+        new SearchParams({ page: 1, per_page: 2, filter: 'TEST' }),
       );
       expect(result).toStrictEqual(
         new SearchResult({
@@ -268,11 +268,11 @@ describe('InMemorySearchableRepository unit tests', () => {
           sort: null,
           sort_dir: null,
           filter: 'TEST',
-        })
+        }),
       );
 
       result = await repository.search(
-        new SearchParams({ page: 2, per_page: 2, filter: 'TEST' })
+        new SearchParams({ page: 2, per_page: 2, filter: 'TEST' }),
       );
       expect(result).toStrictEqual(
         new SearchResult({
@@ -283,7 +283,7 @@ describe('InMemorySearchableRepository unit tests', () => {
           sort: null,
           sort_dir: null,
           filter: 'TEST',
-        })
+        }),
       );
     });
 

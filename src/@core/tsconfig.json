@@ -2,12 +2,12 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "baseUrl": "src",
-    "strictNullChecks": true,
+    "strictNullChecks": false,
     "paths": {
       "#shared/*": ["./shared/*"],
       "#category/*": ["./category/*"]
     },
     "outDir": "./dist"
   },
-  "include": ["./src/*"]
+  "include": ["./src"]
 }

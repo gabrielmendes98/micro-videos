@@ -152,7 +152,7 @@ export interface SearchableRepositoryInterface<
   E extends Entity,
   Filter = string,
   SearchInput = SearchParams<Filter>,
-  SearchOutput = SearchResult<E, Filter>
+  SearchOutput = SearchResult<E, Filter>,
 > extends RepositoryInterface<E> {
   sortableFields: string[];
   search(searchParams: SearchInput): Promise<SearchOutput>;
