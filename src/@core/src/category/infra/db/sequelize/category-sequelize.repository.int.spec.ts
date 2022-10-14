@@ -4,6 +4,7 @@ import { setupSequelize } from '#shared/infra/testing/helpers/db';
 import { CategoryModel } from './category-model';
 import { CategorySequelizeRepository } from './category-sequelize.repository';
 import _chance from 'chance';
+import { CategoryModelMapper } from './category-model-mapper';
 
 const chance = _chance();
 
@@ -83,12 +84,14 @@ describe('CategorySequelizeRepository integration tests', () => {
           created_at,
         }));
 
+      const spyToEntity = jest.spyOn(CategoryModelMapper, 'toEntity');
+
       const searchOutput = await repository.search(
         new CategoryRepository.SearchParams(),
       );
 
       expect(searchOutput).toBeInstanceOf(CategoryRepository.SearchResult);
-      expect(searchOutput.items).toHaveLength(15);
+      expect(spyToEntity).toHaveBeenCalledTimes(15);
       expect(searchOutput).toMatchObject({
         total: 16,
         current_page: 1,
@@ -111,6 +114,29 @@ describe('CategorySequelizeRepository integration tests', () => {
           created_at: created_at,
         }),
       );
+    });
+
+    it('should order by created_at = DESC when search params are null', async () => {
+      const created_at = new Date();
+
+      await CategoryModel.factory()
+        .count(16)
+        .bulkCreate((index) => ({
+          id: chance.guid({ version: 4 }),
+          name: 'movie' + index,
+          description: null,
+          is_active: true,
+          created_at: new Date(created_at.getTime() + 100 + index),
+        }));
+
+      const searchOutput = await repository.search(
+        new CategoryRepository.SearchParams(),
+      );
+
+      const items = searchOutput.items;
+      [...items].reverse().forEach((item, index) => {
+        expect(item.name).toBe('movie' + (index + 1));
+      });
     });
   });
 });
