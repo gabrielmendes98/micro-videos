@@ -296,5 +296,91 @@ describe('CategorySequelizeRepository integration tests', () => {
         );
       }
     });
+
+    it('should search using filter, sort and paginate', async () => {
+      const defaultProps = {
+        description: null,
+        is_active: true,
+        created_at: new Date(),
+      };
+
+      const categoriesProp = [
+        { id: chance.guid({ version: 4 }), name: 'test', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'a', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'TEST', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'e', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'TeSt', ...defaultProps },
+      ];
+      const categories = await CategoryModel.bulkCreate(categoriesProp);
+      const arrange = [
+        {
+          params: {
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            filter: 'TEST',
+          },
+          result: {
+            items: [
+              CategoryModelMapper.toEntity(categories[2]),
+              CategoryModelMapper.toEntity(categories[4]),
+            ],
+            total: 3,
+            current_page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'asc' as const,
+            filter: 'TEST',
+          },
+        },
+        {
+          params: {
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+            filter: 'TEST',
+          },
+          result: {
+            items: [CategoryModelMapper.toEntity(categories[0])],
+            total: 3,
+            current_page: 2,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'asc' as const,
+            filter: 'TEST',
+          },
+        },
+        {
+          params: {
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as const,
+            filter: 'TEST',
+          },
+          result: {
+            items: [
+              CategoryModelMapper.toEntity(categories[0]),
+              CategoryModelMapper.toEntity(categories[4]),
+            ],
+            total: 3,
+            current_page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as const,
+            filter: 'TEST',
+          },
+        },
+      ];
+
+      for (const i of arrange) {
+        const result = await repository.search(
+          new CategoryRepository.SearchParams(i.params),
+        );
+        expect(result.toJSON(true)).toMatchObject(
+          new CategoryRepository.SearchResult(i.result).toJSON(true),
+        );
+      }
+    });
   });
 });
