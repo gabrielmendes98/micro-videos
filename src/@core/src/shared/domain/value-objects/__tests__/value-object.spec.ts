@@ -13,7 +13,7 @@ describe('ValueObject unit tests', () => {
     });
   });
 
-  it('should convert to a string', () => {
+  describe('should convert to a string', () => {
     const date = new Date();
     const arrange = [
       { received: '', expected: '' },
@@ -29,9 +29,9 @@ describe('ValueObject unit tests', () => {
       },
     ];
 
-    arrange.forEach((value) => {
-      const vo = new StubValueObject(value.received);
-      expect(vo + '').toBe(value.expected);
+    test.each(arrange)('from $received to $expected', (input) => {
+      const vo = new StubValueObject(input.received);
+      expect(vo + '').toBe(input.expected);
     });
   });
 
@@ -47,13 +47,13 @@ describe('ValueObject unit tests', () => {
     expect(() => {
       (vo as any).value.prop1 = 'test';
     }).toThrow(
-      "Cannot assign to read only property 'prop1' of object '#<Object>'"
+      "Cannot assign to read only property 'prop1' of object '#<Object>'",
     );
 
     expect(() => {
       (vo as any).value.deep.prop2 = 'test';
     }).toThrow(
-      "Cannot assign to read only property 'prop2' of object '#<Object>'"
+      "Cannot assign to read only property 'prop2' of object '#<Object>'",
     );
 
     expect(vo.value.deep.prop3).toBeInstanceOf(Date);

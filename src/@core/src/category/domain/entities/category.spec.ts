@@ -54,9 +54,9 @@ describe('category unit tests', () => {
       });
     });
 
-    test('with name and id', () => {
+    describe('with name and id', () => {
       type CategoryData = { props: CategoryProperties; id?: UniqueEntityId };
-      const data: CategoryData[] = [
+      const arrange: CategoryData[] = [
         { props: { name: 'Movie' } },
         { props: { name: 'Movie' }, id: undefined },
         {
@@ -65,8 +65,8 @@ describe('category unit tests', () => {
         },
       ];
 
-      data.forEach((i) => {
-        const category = new Category(i.props, i.id);
+      test.each(arrange)('when props is (%j)', (item) => {
+        const category = new Category(item.props, item.id);
         expect(category.uniqueEntityId).not.toBeNull();
         expect(category.uniqueEntityId).toBeInstanceOf(UniqueEntityId);
       });
