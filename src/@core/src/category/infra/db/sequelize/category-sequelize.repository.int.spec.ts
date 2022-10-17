@@ -195,5 +195,106 @@ describe('CategorySequelizeRepository integration tests', () => {
         }).toJSON(true),
       );
     });
+
+    it('should apply paginate and sort', async () => {
+      expect(repository.sortableFields).toStrictEqual(['name', 'created_at']);
+
+      const defaultProps = {
+        description: null,
+        is_active: true,
+        created_at: new Date(),
+      };
+
+      const categoriesProp = [
+        { id: chance.guid({ version: 4 }), name: 'b', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'a', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'd', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'e', ...defaultProps },
+        { id: chance.guid({ version: 4 }), name: 'c', ...defaultProps },
+      ];
+      const categories = await CategoryModel.bulkCreate(categoriesProp);
+
+      const arrange = [
+        {
+          params: { page: 1, per_page: 2, sort: 'name' },
+          result: {
+            items: [
+              CategoryModelMapper.toEntity(categories[1]),
+              CategoryModelMapper.toEntity(categories[0]),
+            ],
+            total: 5,
+            current_page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'asc' as const,
+            filter: null,
+          },
+        },
+        {
+          params: { page: 2, per_page: 2, sort: 'name' },
+          result: {
+            items: [
+              CategoryModelMapper.toEntity(categories[4]),
+              CategoryModelMapper.toEntity(categories[2]),
+            ],
+            total: 5,
+            current_page: 2,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'asc' as const,
+            filter: null,
+          },
+        },
+        {
+          params: {
+            page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as const,
+          },
+          result: {
+            items: [
+              CategoryModelMapper.toEntity(categories[3]),
+              CategoryModelMapper.toEntity(categories[2]),
+            ],
+            total: 5,
+            current_page: 1,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as const,
+            filter: null,
+          },
+        },
+        {
+          params: {
+            page: 2,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as const,
+          },
+          result: {
+            items: [
+              CategoryModelMapper.toEntity(categories[4]),
+              CategoryModelMapper.toEntity(categories[0]),
+            ],
+            total: 5,
+            current_page: 2,
+            per_page: 2,
+            sort: 'name',
+            sort_dir: 'desc' as const,
+            filter: null,
+          },
+        },
+      ];
+
+      for (const i of arrange) {
+        const result = await repository.search(
+          new CategoryRepository.SearchParams(i.params),
+        );
+        expect(result.toJSON(true)).toMatchObject(
+          new CategoryRepository.SearchResult(i.result).toJSON(true),
+        );
+      }
+    });
   });
 });
