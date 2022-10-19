@@ -1,7 +1,7 @@
 import { Category } from '#category/domain/entities/category';
 import { CategoryInMemoryRepository } from '#category/infra';
 import { NotFoundError } from '#shared/domain/errors/not-found.error';
-import { UpdateCategoryUseCase } from '../update-category.use-case';
+import { UpdateCategoryUseCase } from '../../update-category.use-case';
 
 describe('CreateCategoryUseCase unit tests', () => {
   let useCase: UpdateCategoryUseCase.UseCase;

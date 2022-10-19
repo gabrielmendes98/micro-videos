@@ -1,7 +1,7 @@
 import { Category } from '#category/domain/entities/category';
 import { CategoryInMemoryRepository } from '#category/infra';
 import { NotFoundError } from '#shared/domain/errors/not-found.error';
-import { GetCategoryUseCase } from '../get-category.use-case';
+import { GetCategoryUseCase } from '../../get-category.use-case';
 
 describe('GetCategoryUseCase unit tests', () => {
   let useCase: GetCategoryUseCase.UseCase;
@@ -13,7 +13,7 @@ describe('GetCategoryUseCase unit tests', () => {
   });
 
   it('should throw error when entity not found', async () => {
-    expect(() => useCase.execute({ id: 'test id' })).rejects.toThrow(
+    await expect(() => useCase.execute({ id: 'test id' })).rejects.toThrow(
       new NotFoundError('Entity not found using ID test id'),
     );
   });
