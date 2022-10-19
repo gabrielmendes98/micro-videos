@@ -297,7 +297,7 @@ describe('CategorySequelizeRepository integration tests', () => {
       }
     });
 
-    it('should search using filter, sort and paginate', async () => {
+    describe('should search using filter, sort and paginate', () => {
       const defaultProps = {
         description: null,
         is_active: true,
@@ -311,7 +311,7 @@ describe('CategorySequelizeRepository integration tests', () => {
         { id: chance.guid({ version: 4 }), name: 'e', ...defaultProps },
         { id: chance.guid({ version: 4 }), name: 'TeSt', ...defaultProps },
       ];
-      const categories = await CategoryModel.bulkCreate(categoriesProp);
+
       const arrange = [
         {
           params: {
@@ -322,8 +322,8 @@ describe('CategorySequelizeRepository integration tests', () => {
           },
           result: {
             items: [
-              CategoryModelMapper.toEntity(categories[2]),
-              CategoryModelMapper.toEntity(categories[4]),
+              new Category(categoriesProp[2]),
+              new Category(categoriesProp[4]),
             ],
             total: 3,
             current_page: 1,
@@ -341,7 +341,7 @@ describe('CategorySequelizeRepository integration tests', () => {
             filter: 'TEST',
           },
           result: {
-            items: [CategoryModelMapper.toEntity(categories[0])],
+            items: [new Category(categoriesProp[0])],
             total: 3,
             current_page: 2,
             per_page: 2,
@@ -360,8 +360,8 @@ describe('CategorySequelizeRepository integration tests', () => {
           },
           result: {
             items: [
-              CategoryModelMapper.toEntity(categories[0]),
-              CategoryModelMapper.toEntity(categories[4]),
+              new Category(categoriesProp[0]),
+              new Category(categoriesProp[4]),
             ],
             total: 3,
             current_page: 1,
@@ -373,14 +373,18 @@ describe('CategorySequelizeRepository integration tests', () => {
         },
       ];
 
-      for (const i of arrange) {
+      beforeEach(async () => {
+        await CategoryModel.bulkCreate(categoriesProp);
+      });
+
+      test.each(arrange)('when value is $params', async (i) => {
         const result = await repository.search(
           new CategoryRepository.SearchParams(i.params),
         );
         expect(result.toJSON(true)).toMatchObject(
           new CategoryRepository.SearchResult(i.result).toJSON(true),
         );
-      }
+      });
     });
   });
 });
