@@ -53,12 +53,17 @@ export class CategorySequelizeRepository
     return models.map((model) => CategoryModelMapper.toEntity(model));
   }
 
-  update(entity: Category): Promise<void> {
-    throw new Error('Method not implemented.');
+  async update(entity: Category): Promise<void> {
+    await this._get(entity.id);
+    await this.categoryModel.update(entity.toJSON(), {
+      where: { id: entity.id },
+    });
   }
 
-  delete(id: string | UniqueEntityId): Promise<void> {
-    throw new Error('Method not implemented.');
+  async delete(id: string | UniqueEntityId): Promise<void> {
+    const _id = id.toString();
+    await this._get(_id);
+    await this.categoryModel.destroy({ where: { id: _id } });
   }
 
   private async _get(id: string): Promise<CategoryModel> {
