@@ -1,4 +1,3 @@
-import { Category } from '#category/domain/entities/category';
 import { CategoryModel } from '#category/infra/db/sequelize/category-model';
 import { CategorySequelizeRepository } from '#category/infra/db/sequelize/category-sequelize.repository';
 import { NotFoundError } from '#shared/domain/errors/not-found.error';
