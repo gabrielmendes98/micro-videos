@@ -1,7 +1,14 @@
+import { config as readEnv } from 'dotenv';
+import { join } from 'path';
+
+const envTestingFile = join(__dirname, '../../../../.env.testing');
+
+readEnv({ path: envTestingFile });
+
 export const config = {
   db: {
     vendor: process.env.DB_VENDOR as any,
     host: process.env.DB_HOST,
-    logging: Boolean(process.env.DB_LOGGING),
+    logging: process.env.DB_LOGGING === 'true',
   },
 };
