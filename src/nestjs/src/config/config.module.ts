@@ -4,11 +4,50 @@ import {
   ConfigModuleOptions,
 } from '@nestjs/config';
 import { join } from 'path';
+import Joi from 'joi';
+
+type DB_SCHEMA_TYPE = {
+  DB_VENDOR: 'mysql' | 'sqlite';
+  DB_HOST: string;
+  DB_DATABASE: string;
+  DB_USERNAME: string;
+  DB_PASSWORD: string;
+  DB_PORT: number;
+  DB_LOGGING: boolean;
+  DB_AUTO_LOAD_MODELS: boolean;
+};
+
+const DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
+  DB_VENDOR: Joi.string().required().valid('sqlite', 'mysql'),
+  DB_HOST: Joi.string().required(),
+  DB_DATABASE: Joi.string().when('DB_VENDOR', {
+    is: 'mysql',
+    then: Joi.string().required(),
+  }),
+  DB_USERNAME: Joi.string().when('DB_VENDOR', {
+    is: 'mysql',
+    then: Joi.string().required(),
+  }),
+  DB_PASSWORD: Joi.string().when('DB_VENDOR', {
+    is: 'mysql',
+    then: Joi.string().required(),
+  }),
+  DB_PORT: Joi.number().when('DB_VENDOR', {
+    is: 'mysql',
+    then: Joi.number().required(),
+  }),
+  DB_LOGGING: Joi.boolean().required(),
+  DB_AUTO_LOAD_MODELS: Joi.boolean().required(),
+};
+
+export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE;
+// export type CONFIG_SCHEMA_TYPE = DB_SCHEMA_TYPE & XXX_SCHEMA_TYPE & YYY_SCHEMA_TYPE
 
 @Module({})
 export class ConfigModule extends NestConfigModule {
   static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
     return super.forRoot({
+      ...options,
       envFilePath: [
         ...(Array.isArray(options.envFilePath)
           ? options.envFilePath
@@ -16,7 +55,9 @@ export class ConfigModule extends NestConfigModule {
         join(__dirname, `../envs/.env.${process.env.NODE_ENV}`),
         join(__dirname, '../envs/.env'),
       ],
-      ignoreEnvFile: true,
+      validationSchema: Joi.object({
+        ...DB_SCHEMA,
+      }),
     });
   }
 }

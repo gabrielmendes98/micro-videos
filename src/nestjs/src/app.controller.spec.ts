@@ -14,6 +14,12 @@ describe('AppController', () => {
     }).compile();
 
     appController = app.get<AppController>(AppController);
+
+    // const configService: ConfigService =
+    //   app.get<ConfigService<CONFIG_SCHEMA_TYPE>>(ConfigService);
+
+    // const db_vendor =
+    //   configService.get<CONFIG_SCHEMA_TYPE['DB_VENDOR']>('DB_VENDOR');
   });
 
   describe('root', () => {
