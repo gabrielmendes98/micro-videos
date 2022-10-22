@@ -9,6 +9,10 @@ export default {
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
   },
+  setupFilesAfterEnv: [
+    '<rootDir>/../../@core/src/shared/domain/tests/validations.ts',
+    '<rootDir>/../../@core/src/shared/domain/tests/jest.ts',
+  ],
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
   testEnvironment: 'node',
