@@ -6,7 +6,7 @@ import {
 import { join } from 'path';
 import Joi from 'joi';
 
-type DB_SCHEMA_TYPE = {
+export type DB_SCHEMA_TYPE = {
   DB_VENDOR: 'mysql' | 'sqlite';
   DB_HOST: string;
   DB_DATABASE: string;
@@ -17,8 +17,8 @@ type DB_SCHEMA_TYPE = {
   DB_AUTO_LOAD_MODELS: boolean;
 };
 
-const DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
-  DB_VENDOR: Joi.string().required().valid('sqlite', 'mysql'),
+export const CONFIG_DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
+  DB_VENDOR: Joi.string().required().valid('mysql', 'sqlite'),
   DB_HOST: Joi.string().required(),
   DB_DATABASE: Joi.string().when('DB_VENDOR', {
     is: 'mysql',
@@ -32,7 +32,7 @@ const DB_SCHEMA: Joi.StrictSchemaMap<DB_SCHEMA_TYPE> = {
     is: 'mysql',
     then: Joi.string().required(),
   }),
-  DB_PORT: Joi.number().when('DB_VENDOR', {
+  DB_PORT: Joi.number().integer().when('DB_VENDOR', {
     is: 'mysql',
     then: Joi.number().required(),
   }),
@@ -56,7 +56,7 @@ export class ConfigModule extends NestConfigModule {
         join(__dirname, '../envs/.env'),
       ],
       validationSchema: Joi.object({
-        ...DB_SCHEMA,
+        ...CONFIG_DB_SCHEMA,
       }),
     });
   }
