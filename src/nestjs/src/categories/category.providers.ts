@@ -1,4 +1,7 @@
-import { CategoryInMemoryRepository } from 'core/category/infra';
+import {
+  CategoryInMemoryRepository,
+  CategorySequelizeRepository,
+} from 'core/category/infra';
 import {
   CreateCategoryUseCase,
   DeleteCategoryUseCase,
@@ -14,6 +17,16 @@ export namespace CATEGORY_PROVIDERS {
       provide: 'CategoryInMemoryRepository',
       useClass: CategoryInMemoryRepository,
     };
+
+    export const SEQUELIZE = {
+      provide: 'CategorySequelizeRepository',
+      useClass: CategorySequelizeRepository,
+    };
+
+    export const IN_USE = {
+      provide: 'CategoryRepositoy',
+      useExisting: 'CategorySequelizeRepository',
+    };
   }
 
   export namespace USE_CASES {
@@ -22,7 +35,7 @@ export namespace CATEGORY_PROVIDERS {
       useFactory: (categoryRepo: CategoryRepository.Repository) => {
         return new UpdateCategoryUseCase.UseCase(categoryRepo);
       },
-      inject: [REPOSITORIES.IN_MEMORY.provide],
+      inject: [REPOSITORIES.IN_USE.provide],
     };
 
     export const CREATE = {
@@ -30,7 +43,7 @@ export namespace CATEGORY_PROVIDERS {
       useFactory: (categoryRepo: CategoryRepository.Repository) => {
         return new CreateCategoryUseCase.UseCase(categoryRepo);
       },
-      inject: [REPOSITORIES.IN_MEMORY.provide],
+      inject: [REPOSITORIES.IN_USE.provide],
     };
 
     export const DELETE = {
@@ -38,7 +51,7 @@ export namespace CATEGORY_PROVIDERS {
       useFactory: (categoryRepo: CategoryRepository.Repository) => {
         return new DeleteCategoryUseCase.UseCase(categoryRepo);
       },
-      inject: [REPOSITORIES.IN_MEMORY.provide],
+      inject: [REPOSITORIES.IN_USE.provide],
     };
 
     export const GET = {
@@ -46,7 +59,7 @@ export namespace CATEGORY_PROVIDERS {
       useFactory: (categoryRepo: CategoryRepository.Repository) => {
         return new GetCategoryUseCase.UseCase(categoryRepo);
       },
-      inject: [REPOSITORIES.IN_MEMORY.provide],
+      inject: [REPOSITORIES.IN_USE.provide],
     };
 
     export const LIST = {
@@ -54,7 +67,7 @@ export namespace CATEGORY_PROVIDERS {
       useFactory: (categoryRepo: CategoryRepository.Repository) => {
         return new ListCategoriesUseCase.UseCase(categoryRepo);
       },
-      inject: [REPOSITORIES.IN_MEMORY.provide],
+      inject: [REPOSITORIES.IN_USE.provide],
     };
   }
 }
