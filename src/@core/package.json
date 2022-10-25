@@ -50,7 +50,13 @@
     "uuid": "^9.0.0"
   },
   "imports": {
+    "#shared/domain": "./dist/shared/domain/index.js",
+    "#shared/application": "./dist/shared/application/index.js",
+    "#shared/infra": "./dist/shared/infra/index.js",
     "#shared/*": "./dist/shared/*.js",
+    "#category/domain": "./dist/category/domain/index.js",
+    "#category/application": "./dist/category/application/index.js",
+    "#category/infra": "./dist/category/infra/index.js",
     "#category/*": "./dist/category/*.js"
   },
   "exports": {

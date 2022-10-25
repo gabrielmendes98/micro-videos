@@ -9,6 +9,8 @@ RUN mkdir -p /usr/share/man/man1 && \
 
 RUN npm install -g @nestjs/cli@8.2.5 npm@8.5.5
 
+RUN usermod -u 268670508 node
+
 USER node
 
 WORKDIR /home/node/app
