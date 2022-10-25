@@ -48,6 +48,7 @@ export class ConfigModule extends NestConfigModule {
   static forRoot(options: ConfigModuleOptions = {}): DynamicModule {
     return super.forRoot({
       ...options,
+      isGlobal: true,
       envFilePath: [
         ...(Array.isArray(options.envFilePath)
           ? options.envFilePath

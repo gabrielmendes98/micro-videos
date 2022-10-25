@@ -1,5 +1,6 @@
 import {
   CategoryInMemoryRepository,
+  CategoryModel,
   CategorySequelizeRepository,
 } from 'core/category/infra';
 import {
@@ -10,6 +11,7 @@ import {
   UpdateCategoryUseCase,
 } from 'core/category/application';
 import { CategoryRepository } from 'core/category/domain';
+import { getModelToken } from '@nestjs/sequelize';
 
 export namespace CATEGORY_PROVIDERS {
   export namespace REPOSITORIES {
@@ -20,7 +22,9 @@ export namespace CATEGORY_PROVIDERS {
 
     export const SEQUELIZE = {
       provide: 'CategorySequelizeRepository',
-      useClass: CategorySequelizeRepository,
+      useFactory: (categoryModel: typeof CategoryModel) =>
+        new CategorySequelizeRepository(categoryModel),
+      inject: [getModelToken(CategoryModel)],
     };
 
     export const IN_USE = {
