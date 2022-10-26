@@ -1,6 +1,6 @@
 import { getConnectionToken } from '@nestjs/sequelize';
 import { Test } from '@nestjs/testing';
-import { ConfigModule, CONFIG_DB_SCHEMA } from '../config/config.module';
+import { ConfigModule, CONFIG_DB_SCHEMA } from 'src/config/config.module';
 import { DatabaseModule } from './database.module';
 import { Sequelize } from 'sequelize-typescript';
 import * as Joi from 'joi';
