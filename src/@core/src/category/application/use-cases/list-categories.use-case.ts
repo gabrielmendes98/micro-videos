@@ -1,10 +1,10 @@
-import { CategoryRepository } from '#category/domain/repositories/category.repository';
+import { CategoryRepository } from '#category/domain';
 import {
   ListOutputDto,
   ListOutputDtoMapper,
-} from '#shared/application/dto/list-output.dto';
-import { SearchInputDto } from '#shared/application/dto/search-input.dto';
-import { UseCase as BaseUseCase } from '#shared/application/use-case';
+  SearchInputDto,
+  UseCase as BaseUseCase,
+} from '#shared/application';
 import {
   CategoryOutputDto,
   CategoryOutputDtoMapper,

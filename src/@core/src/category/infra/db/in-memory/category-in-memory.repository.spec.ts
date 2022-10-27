@@ -1,4 +1,4 @@
-import { Category } from '#category/domain/entities/category';
+import { Category } from '#category/domain';
 import { CategoryInMemoryRepository } from './category-in-memory.repository';
 
 describe('CategoryInMemoryRepository unit tests', () => {
@@ -28,7 +28,7 @@ describe('CategoryInMemoryRepository unit tests', () => {
 
       const filteredItems = await repository['applyFilter'](
         repository.items,
-        ''
+        '',
       );
       expect(filteredItems).toStrictEqual(items);
     });
@@ -38,7 +38,7 @@ describe('CategoryInMemoryRepository unit tests', () => {
 
       const filteredItems = await repository['applyFilter'](
         repository.items,
-        'movie'
+        'movie',
       );
       expect(filteredItems).toStrictEqual([items[0]]);
     });
@@ -48,7 +48,7 @@ describe('CategoryInMemoryRepository unit tests', () => {
 
       const filteredItems = await repository['applyFilter'](
         repository.items,
-        'mov'
+        'mov',
       );
       expect(filteredItems).toStrictEqual([items[0]]);
     });
@@ -65,7 +65,7 @@ describe('CategoryInMemoryRepository unit tests', () => {
       let sortedItems = await repository['applySort'](
         items,
         'created_at',
-        'desc'
+        'desc',
       );
       expect(sortedItems).toStrictEqual([items[1], items[2], items[0]]);
 

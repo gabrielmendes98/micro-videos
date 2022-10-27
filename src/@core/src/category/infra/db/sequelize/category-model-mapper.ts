@@ -1,6 +1,9 @@
 import { Category } from '#category/domain';
-import { EntityValidationError, UniqueEntityId } from '#shared/domain';
-import { LoadEntityError } from '#shared/domain/errors/load-entity.error';
+import {
+  EntityValidationError,
+  UniqueEntityId,
+  LoadEntityError,
+} from '#shared/domain';
 import { CategoryModel } from './category-model';
 
 export class CategoryModelMapper {

@@ -1,4 +1,4 @@
-import { ValidationError } from '#shared/domain/errors/validation.error';
+import { ValidationError } from '#shared/domain';
 import { ValidatorRules } from '../validator-rules';
 
 type Values = {
@@ -131,7 +131,7 @@ describe('ValidatorRules unit tests', () => {
     it('should throw error', () => {
       const arrange: Values[] = [{ value: '123456', property: 'field' }];
       const error = new ValidationError(
-        'The field must be less or equal than 5 characters'
+        'The field must be less or equal than 5 characters',
       );
       arrange.forEach((item) => {
         assertIsInvalid({
@@ -150,7 +150,7 @@ describe('ValidatorRules unit tests', () => {
         { value: {}, property: 'field' },
       ];
       let error = new ValidationError(
-        'The field must be a string or array to use maxLength method'
+        'The field must be a string or array to use maxLength method',
       );
       arrange.forEach((item) => {
         assertIsInvalid({
@@ -167,7 +167,7 @@ describe('ValidatorRules unit tests', () => {
         { value: [1, 2, 3], property: 'field' },
       ];
       error = new ValidationError(
-        'The field must be a string or array to use maxLength method'
+        'The field must be a string or array to use maxLength method',
       );
       arrange.forEach((item) => {
         assertIsValid({
@@ -187,7 +187,7 @@ describe('ValidatorRules unit tests', () => {
         { value: undefined, property: 'field' },
       ];
       const error = new ValidationError(
-        'The field must less or equal than 5 characters'
+        'The field must less or equal than 5 characters',
       );
       arrange.forEach((item) => {
         assertIsValid({
@@ -253,7 +253,7 @@ describe('ValidatorRules unit tests', () => {
     expect(() => {
       validator.required().string().maxLength(5);
     }).toThrow(
-      new ValidationError('The field must be less or equal than 5 characters')
+      new ValidationError('The field must be less or equal than 5 characters'),
     );
 
     validator = ValidatorRules.values(null, 'field');

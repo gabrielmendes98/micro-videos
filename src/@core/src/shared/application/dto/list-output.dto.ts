@@ -1,4 +1,4 @@
-import { SearchResult } from '#shared/domain/repositories/repository-contracts';
+import { SearchResult } from '#shared/domain';
 
 export type ListOutputDto<ItemDto = any> = {
   items: ItemDto[];
@@ -10,7 +10,7 @@ export type ListOutputDto<ItemDto = any> = {
 
 export class ListOutputDtoMapper {
   static fromSearchResult(
-    searchResult: SearchResult
+    searchResult: SearchResult,
   ): Omit<ListOutputDto, 'items'> {
     return {
       total: searchResult.total,

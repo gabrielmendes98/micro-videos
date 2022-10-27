@@ -1,4 +1,4 @@
-import { Category } from '#category/domain/entities/category';
+import { Category } from '#category/domain';
 import { CategoryOutputDtoMapper } from './category-output.dto';
 
 describe('CategoryOutputDtoMapper unit tests', () => {

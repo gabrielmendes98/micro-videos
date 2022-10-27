@@ -1,4 +1,4 @@
-import { testConfig } from '#shared/infra/config';
+import { testConfig } from '#shared/infra';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
 const defaultOptions: SequelizeOptions = {

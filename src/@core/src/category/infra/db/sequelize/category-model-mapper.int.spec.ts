@@ -1,7 +1,6 @@
 import { Category } from '#category/domain';
-import { UniqueEntityId } from '#shared/domain';
-import { LoadEntityError } from '#shared/domain/errors/load-entity.error';
-import { setupSequelize } from '#shared/infra/testing/helpers/db';
+import { UniqueEntityId, LoadEntityError } from '#shared/domain';
+import { setupSequelize } from '#shared/infra';
 import { CategoryModel } from './category-model';
 import { CategoryModelMapper } from './category-model-mapper';
 

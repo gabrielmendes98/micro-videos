@@ -1,6 +1,6 @@
 import { Category, CategoryRepository } from '#category/domain';
 import { NotFoundError, UniqueEntityId } from '#shared/domain';
-import { setupSequelize } from '#shared/infra/testing/helpers/db';
+import { setupSequelize } from '#shared/infra';
 import { CategoryModel } from './category-model';
 import { CategorySequelizeRepository } from './category-sequelize.repository';
 import _chance from 'chance';

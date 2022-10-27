@@ -1,9 +1,11 @@
 import _chance from 'chance';
-import { CategoryModel } from '#category/infra/db/sequelize/category-model';
-import { CategorySequelizeRepository } from '#category/infra/db/sequelize/category-sequelize.repository';
-import { setupSequelize } from '#shared/infra/testing/helpers/db';
+import {
+  CategoryModel,
+  CategorySequelizeRepository,
+  CategoryModelMapper,
+} from '#category/infra';
+import { setupSequelize } from '#shared/infra';
 import { ListCategoriesUseCase } from '../../list-categories.use-case';
-import { CategoryModelMapper } from '#category/infra/db/sequelize/category-model-mapper';
 
 const chance = _chance();
 

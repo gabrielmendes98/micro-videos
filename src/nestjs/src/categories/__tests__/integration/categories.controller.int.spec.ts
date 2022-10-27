@@ -47,12 +47,22 @@ describe('CategoriesController integration tests', () => {
       name: 'movie',
     });
 
-    expect(output).toMatchObject({
+    const entity = await repository.findById(output.id);
+
+    expect(entity).toMatchObject({
+      id: output.id,
       name: 'movie',
       description: null,
       is_active: true,
+      created_at: output.created_at,
     });
-    expect(output.id).toBeTruthy();
-    expect(output.created_at).toBeInstanceOf(Date);
+
+    expect(output).toMatchObject({
+      id: entity.id,
+      name: 'movie',
+      description: null,
+      is_active: true,
+      created_at: entity.created_at,
+    });
   });
 });

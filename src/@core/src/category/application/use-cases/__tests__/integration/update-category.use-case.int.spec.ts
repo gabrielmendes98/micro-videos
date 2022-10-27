@@ -1,7 +1,6 @@
-import { CategoryModel } from '#category/infra/db/sequelize/category-model';
-import { CategorySequelizeRepository } from '#category/infra/db/sequelize/category-sequelize.repository';
-import { NotFoundError } from '#shared/domain/errors/not-found.error';
-import { setupSequelize } from '#shared/infra/testing/helpers/db';
+import { CategoryModel, CategorySequelizeRepository } from '#category/infra';
+import { NotFoundError } from '#shared/domain';
+import { setupSequelize } from '#shared/infra';
 import { UpdateCategoryUseCase } from '../../update-category.use-case';
 
 describe('CreateCategoryUseCase integration tests', () => {

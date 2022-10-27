@@ -1,7 +1,5 @@
-import { Category } from '#category/domain/entities/category';
-import { CategoryRepository } from '#category/domain/repositories/category.repository';
-import { InMemorySearchableRepository } from '#shared/domain/repositories/in-memory.repository';
-import { SortDirection } from '#shared/domain/repositories/repository-contracts';
+import { Category, CategoryRepository } from '#category/domain';
+import { InMemorySearchableRepository, SortDirection } from '#shared/domain';
 
 export class CategoryInMemoryRepository
   extends InMemorySearchableRepository<Category>
@@ -11,21 +9,21 @@ export class CategoryInMemoryRepository
 
   protected async applyFilter(
     items: Category[],
-    filter: CategoryRepository.Filter
+    filter: CategoryRepository.Filter,
   ): Promise<Category[]> {
     if (!filter) {
       return items;
     }
 
     return items.filter((item) =>
-      item.props.name.toLowerCase().includes(filter.toLowerCase())
+      item.props.name.toLowerCase().includes(filter.toLowerCase()),
     );
   }
 
   protected async applySort(
     items: Category[],
     sort: string | null,
-    sort_dir: SortDirection | null
+    sort_dir: SortDirection | null,
   ): Promise<Category[]> {
     return super.applySort(items, sort ?? 'created_at', sort_dir);
   }

@@ -1,4 +1,4 @@
-import { SequelizeModelFactory } from '#shared/infra/sequelize/sequelize-model-factory';
+import { SequelizeModelFactory } from '#shared/infra';
 import {
   Column,
   DataType,

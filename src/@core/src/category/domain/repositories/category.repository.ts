@@ -2,7 +2,7 @@ import {
   SearchableRepositoryInterface,
   SearchParams as BaseSearchParams,
   SearchResult as BaseSearchResult,
-} from '#shared/domain/repositories/repository-contracts';
+} from '#shared/domain';
 import { Category } from '../entities/category';
 
 export namespace CategoryRepository {

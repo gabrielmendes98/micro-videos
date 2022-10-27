@@ -1,4 +1,4 @@
-import { ValidationError } from '#shared/domain/errors/validation.error';
+import { ValidationError } from '#shared/domain';
 
 export class ValidatorRules {
   private constructor(private value: any, private property: string) {}
@@ -28,12 +28,12 @@ export class ValidatorRules {
       !Array.isArray(this.value)
     ) {
       throw new ValidationError(
-        `The ${this.property} must be a string or array to use maxLength method`
+        `The ${this.property} must be a string or array to use maxLength method`,
       );
     }
     if (!this.isEmpty() && this.value.length > max) {
       throw new ValidationError(
-        `The ${this.property} must be less or equal than ${max} characters`
+        `The ${this.property} must be less or equal than ${max} characters`,
       );
     }
     return this;

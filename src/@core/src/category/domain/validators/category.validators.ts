@@ -6,7 +6,7 @@ import {
   IsBoolean,
   IsDate,
 } from 'class-validator';
-import { ClassValidatorFields } from '#shared/domain/validators/class-validator-fields';
+import { ClassValidatorFields } from '#shared/domain';
 import { CategoryProperties } from '../entities/category';
 
 export class CategoryRules implements CategoryProperties {

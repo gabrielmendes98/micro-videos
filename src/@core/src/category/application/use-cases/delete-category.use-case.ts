@@ -1,5 +1,5 @@
-import { CategoryRepository } from '#category/domain/repositories/category.repository';
-import { UseCase as BaseUseCase } from '#shared/application/use-case';
+import { CategoryRepository } from '#category/domain';
+import { UseCase as BaseUseCase } from '#shared/application';
 
 export namespace DeleteCategoryUseCase {
   export class UseCase implements BaseUseCase<Input, Output> {
