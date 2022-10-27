@@ -42,27 +42,62 @@ describe('CategoriesController integration tests', () => {
     );
   });
 
-  it('should create a category', async () => {
-    const output = await controller.create({
-      name: 'movie',
-    });
+  describe('should create a category', () => {
+    const arrange = [
+      {
+        request: {
+          name: 'Movie',
+        },
+        expectedPresenter: {
+          name: 'Movie',
+          description: null,
+          is_active: true,
+        },
+      },
+      {
+        request: {
+          name: 'Movie',
+          description: null,
+        },
+        expectedPresenter: {
+          name: 'Movie',
+          description: null,
+          is_active: true,
+        },
+      },
+      {
+        request: {
+          name: 'Movie',
+          is_active: true,
+        },
+        expectedPresenter: {
+          name: 'Movie',
+          description: null,
+          is_active: true,
+        },
+      },
+    ];
 
-    const entity = await repository.findById(output.id);
+    test.each(arrange)(
+      'with request $request',
+      async ({ request, expectedPresenter }) => {
+        const presenter = await controller.create(request);
+        const entity = await repository.findById(presenter.id);
 
-    expect(entity).toMatchObject({
-      id: output.id,
-      name: 'movie',
-      description: null,
-      is_active: true,
-      created_at: output.created_at,
-    });
+        expect(entity).toMatchObject({
+          id: presenter.id,
+          name: expectedPresenter.name,
+          description: expectedPresenter.description,
+          is_active: expectedPresenter.is_active,
+          created_at: presenter.created_at,
+        });
 
-    expect(output).toMatchObject({
-      id: entity.id,
-      name: 'movie',
-      description: null,
-      is_active: true,
-      created_at: entity.created_at,
-    });
+        expect(presenter.id).toBe(entity.id);
+        expect(presenter.name).toBe(expectedPresenter.name);
+        expect(presenter.description).toBe(expectedPresenter.description);
+        expect(presenter.is_active).toBe(expectedPresenter.is_active);
+        expect(presenter.created_at).toStrictEqual(entity.created_at);
+      },
+    );
   });
 });
