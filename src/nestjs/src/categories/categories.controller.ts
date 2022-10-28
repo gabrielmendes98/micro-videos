@@ -10,8 +10,6 @@ import {
   HttpCode,
   Query,
 } from '@nestjs/common';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
 import {
   CreateCategoryUseCase,
   DeleteCategoryUseCase,
@@ -19,7 +17,10 @@ import {
   ListCategoriesUseCase,
   UpdateCategoryUseCase,
 } from 'core/category/application';
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 import { SearchCategoryDto } from './dto/search-category.dto';
+import { CategoryPresenter } from './presenter/category.presenter';
 
 @Controller('categories')
 export class CategoriesController {
@@ -39,8 +40,9 @@ export class CategoriesController {
   private updateUseCase: UpdateCategoryUseCase.UseCase;
 
   @Post()
-  create(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.createUseCase.execute(createCategoryDto);
+  async create(@Body() createCategoryDto: CreateCategoryDto) {
+    const output = await this.createUseCase.execute(createCategoryDto);
+    return new CategoryPresenter(output);
   }
 
   @Get()
