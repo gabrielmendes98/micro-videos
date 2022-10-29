@@ -1,4 +1,4 @@
-import { Category, CategoryProperties } from './category';
+import { Category, CategoryProperties } from '../category';
 import { omit } from 'lodash';
 import { UniqueEntityId } from '#shared/domain';
 

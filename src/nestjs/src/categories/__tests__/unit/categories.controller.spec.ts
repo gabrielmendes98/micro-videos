@@ -65,13 +65,14 @@ describe('CategoriesController unit tests', () => {
     };
 
     controller['updateUseCase'] = updateUseCaseMock as any;
-    const response = await controller.update(id, input);
+    const presenter = await controller.update(id, input);
 
     expect(updateUseCaseMock.execute).toHaveBeenCalledWith({
       id,
       ...input,
     });
-    expect(response).toStrictEqual(output);
+    expect(presenter).toBeInstanceOf(CategoryPresenter);
+    expect(presenter).toStrictEqual(new CategoryPresenter(output));
   });
 
   it('should delete a category', async () => {
@@ -110,10 +111,11 @@ describe('CategoriesController unit tests', () => {
 
     controller['getUseCase'] = getUseCaseMock as any;
 
-    const response = await controller.findOne(id);
+    const presenter = await controller.findOne(id);
 
     expect(getUseCaseMock.execute).toHaveBeenCalledWith(input);
-    expect(response).toStrictEqual(output);
+    expect(presenter).toBeInstanceOf(CategoryPresenter);
+    expect(presenter).toStrictEqual(new CategoryPresenter(output));
   });
 
   it('should list categories', async () => {
