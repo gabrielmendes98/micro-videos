@@ -2,19 +2,21 @@ import { Category } from '#category/domain';
 import { CategoryInMemoryRepository } from './category-in-memory.repository';
 
 describe('CategoryInMemoryRepository unit tests', () => {
+  const builder = Category.fake().aCategory();
+
   const items: Category[] = [
-    new Category({
-      name: 'movie',
-      created_at: new Date('2022-02-19T00:00:00Z'),
-    }),
-    new Category({
-      name: 'series',
-      created_at: new Date('2022-02-21T00:00:00Z'),
-    }),
-    new Category({
-      name: 'trailers',
-      created_at: new Date('2022-02-20T00:00:00Z'),
-    }),
+    builder
+      .withName('movie')
+      .withCreatedAt(new Date('2022-02-19T00:00:00Z'))
+      .build(),
+    builder
+      .withName('series')
+      .withCreatedAt(new Date('2022-02-21T00:00:00Z'))
+      .build(),
+    builder
+      .withName('trailers')
+      .withCreatedAt(new Date('2022-02-20T00:00:00Z'))
+      .build(),
   ];
   let repository: CategoryInMemoryRepository;
 

@@ -1,5 +1,6 @@
 import { UniqueEntityId, Entity, EntityValidationError } from '#shared/domain';
 import { CategoryValidatorFactory } from '../validators/category.validators';
+import { CategoryBuilder } from './category-builder';
 
 export type CategoryProperties = {
   name: string;
@@ -71,5 +72,9 @@ export class Category extends Entity<CategoryProperties> {
 
   deactivate() {
     this.props.is_active = false;
+  }
+
+  static fake() {
+    return CategoryBuilder;
   }
 }

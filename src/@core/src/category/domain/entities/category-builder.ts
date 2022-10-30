@@ -18,7 +18,7 @@ export class CategoryBuilder<TBuild = any> {
   // auto generated in entity
   private _created_at: PropOrFactory<Date> = undefined;
 
-  constructor(countObjs: number = 1) {
+  private constructor(countObjs: number = 1) {
     this.amount = countObjs;
     this.chance = Chance();
   }

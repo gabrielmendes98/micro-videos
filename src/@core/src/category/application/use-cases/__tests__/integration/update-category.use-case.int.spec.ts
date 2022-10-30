@@ -1,3 +1,4 @@
+import { Category } from '#category/domain';
 import { CategoryModel, CategorySequelizeRepository } from '#category/infra';
 import { NotFoundError } from '#shared/domain';
 import { setupSequelize } from '#shared/infra';
@@ -25,69 +26,68 @@ describe('CreateCategoryUseCase integration tests', () => {
   });
 
   it('should update a category', async () => {
-    const category = await CategoryModel.factory().create({
-      name: 'fake name',
-      created_at: new Date(),
-      description: 'fake desc',
-      id: 'dd2d887b-6403-4519-add4-81575076e105',
-      is_active: true,
-    });
+    const entity = Category.fake().aCategory().build();
+    repository.insert(entity);
 
     const arrange: {
       input: UpdateCategoryUseCase.Input;
       output: UpdateCategoryUseCase.Output;
     }[] = [
       {
-        input: { name: 'movie', description: 'some desc', id: category.id },
+        input: {
+          name: 'movie',
+          description: 'some desc',
+          id: entity.id,
+        },
         output: {
-          id: category.id,
+          id: entity.id,
           name: 'movie',
           description: 'some desc',
           is_active: true,
-          created_at: category.created_at,
+          created_at: entity.created_at,
         },
       },
       {
         input: {
           name: 'movie',
           description: 'some desc',
-          id: category.id,
+          id: entity.id,
           is_active: false,
         },
         output: {
-          id: category.id,
+          id: entity.id,
           name: 'movie',
           description: 'some desc',
           is_active: false,
-          created_at: category.created_at,
+          created_at: entity.created_at,
         },
       },
       {
         input: {
           name: 'movie',
           description: 'some desc',
-          id: category.id,
+          id: entity.id,
           is_active: true,
         },
         output: {
-          id: category.id,
+          id: entity.id,
           name: 'movie',
           description: 'some desc',
           is_active: true,
-          created_at: category.created_at,
+          created_at: entity.created_at,
         },
       },
       {
         input: {
           name: 'movie',
-          id: category.id,
+          id: entity.id,
         },
         output: {
-          id: category.id,
+          id: entity.id,
           name: 'movie',
           description: null,
           is_active: true,
-          created_at: category.created_at,
+          created_at: entity.created_at,
         },
       },
     ];

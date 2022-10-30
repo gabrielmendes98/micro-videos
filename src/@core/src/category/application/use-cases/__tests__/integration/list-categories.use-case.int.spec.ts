@@ -1,13 +1,7 @@
-import _chance from 'chance';
-import {
-  CategoryModel,
-  CategorySequelizeRepository,
-  CategoryModelMapper,
-} from '#category/infra';
+import { CategoryModel, CategorySequelizeRepository } from '#category/infra';
 import { setupSequelize } from '#shared/infra';
 import { ListCategoriesUseCase } from '../../list-categories.use-case';
-
-const chance = _chance();
+import { Category } from '#category/domain';
 
 describe('ListCategoriesUseCase integration tests', () => {
   let useCase: ListCategoriesUseCase.UseCase;
@@ -21,23 +15,18 @@ describe('ListCategoriesUseCase integration tests', () => {
   });
 
   it('should return output with categories ordered by created_at when use empty input', async () => {
-    const models = await CategoryModel.factory()
-      .count(2)
-      .bulkCreate((index) => ({
-        id: chance.guid({ version: 4 }),
-        name: 'movie',
-        description: 'some description',
-        is_active: true,
-        created_at: new Date(new Date().getTime() + 100 + index),
-      }));
+    const builder = Category.fake().theCategories(2);
+    const entities = builder
+      .withName('movie')
+      .withCreatedAt((index) => new Date(new Date().getTime() + 100 + index))
+      .build();
+
+    await repository.bulkInsert(entities);
 
     const output = await useCase.execute({});
 
     expect(output).toMatchObject({
-      items: [
-        CategoryModelMapper.toEntity(models[1]).toJSON(),
-        CategoryModelMapper.toEntity(models[0]).toJSON(),
-      ],
+      items: [entities[1].toJSON(), entities[0].toJSON()],
       total: 2,
       current_page: 1,
       per_page: 15,
@@ -46,17 +35,23 @@ describe('ListCategoriesUseCase integration tests', () => {
   });
 
   it('should be able to use input params to paginate, search and filter', async () => {
-    const models = CategoryModel.factory().count(3).bulkMake();
-    models[0].name = 'aaaa';
-    models[0].created_at = new Date('2022-09-26T01:06:35.882Z');
-    models[1].name = 'test';
-    models[1].created_at = new Date('2022-09-27T01:06:35.882Z');
-    models[2].name = 'TESTEEE';
-    models[2].created_at = new Date('2022-09-25T01:06:35.882Z');
+    const builder = Category.fake().aCategory();
+    const entities = [
+      builder
+        .withName('aaaa')
+        .withCreatedAt(new Date('2022-09-26T01:06:35.882Z'))
+        .build(),
+      builder
+        .withName('test')
+        .withCreatedAt(new Date('2022-09-27T01:06:35.882Z'))
+        .build(),
+      builder
+        .withName('TESTEEE')
+        .withCreatedAt(new Date('2022-09-25T01:06:35.882Z'))
+        .build(),
+    ];
 
-    const modelsCreated = await CategoryModel.bulkCreate(
-      models.map((m) => m.toJSON()),
-    );
+    await repository.bulkInsert(entities);
 
     const arrange: {
       input: ListCategoriesUseCase.Input;
@@ -67,10 +62,7 @@ describe('ListCategoriesUseCase integration tests', () => {
           filter: 'test',
         },
         output: {
-          items: [
-            CategoryModelMapper.toEntity(modelsCreated[1]).toJSON(),
-            CategoryModelMapper.toEntity(modelsCreated[2]).toJSON(),
-          ],
+          items: [entities[1].toJSON(), entities[2].toJSON()],
           total: 2,
           current_page: 1,
           per_page: 15,
@@ -83,7 +75,7 @@ describe('ListCategoriesUseCase integration tests', () => {
           per_page: 2,
         },
         output: {
-          items: [CategoryModelMapper.toEntity(modelsCreated[2]).toJSON()],
+          items: [entities[2].toJSON()],
           total: 3,
           current_page: 2,
           per_page: 2,
@@ -97,9 +89,9 @@ describe('ListCategoriesUseCase integration tests', () => {
         },
         output: {
           items: [
-            CategoryModelMapper.toEntity(modelsCreated[1]).toJSON(),
-            CategoryModelMapper.toEntity(modelsCreated[0]).toJSON(),
-            CategoryModelMapper.toEntity(modelsCreated[2]).toJSON(),
+            entities[1].toJSON(),
+            entities[0].toJSON(),
+            entities[2].toJSON(),
           ],
           total: 3,
           current_page: 1,
@@ -114,9 +106,9 @@ describe('ListCategoriesUseCase integration tests', () => {
         },
         output: {
           items: [
-            CategoryModelMapper.toEntity(modelsCreated[2]).toJSON(),
-            CategoryModelMapper.toEntity(modelsCreated[0]).toJSON(),
-            CategoryModelMapper.toEntity(modelsCreated[1]).toJSON(),
+            entities[2].toJSON(),
+            entities[0].toJSON(),
+            entities[1].toJSON(),
           ],
           total: 3,
           current_page: 1,
@@ -133,7 +125,7 @@ describe('ListCategoriesUseCase integration tests', () => {
           sort_dir: 'asc',
         },
         output: {
-          items: [CategoryModelMapper.toEntity(modelsCreated[1]).toJSON()],
+          items: [entities[1].toJSON()],
           total: 2,
           current_page: 2,
           per_page: 1,

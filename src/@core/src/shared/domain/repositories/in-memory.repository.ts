@@ -17,6 +17,10 @@ export abstract class InMemoryRepository<E extends Entity>
     this.items.push(entity);
   }
 
+  async bulkInsert(entities: E[]): Promise<void> {
+    this.items.push(...entities);
+  }
+
   async findById(id: string | UniqueEntityId): Promise<E> {
     return this._get(id.toString());
   }
@@ -34,7 +38,7 @@ export abstract class InMemoryRepository<E extends Entity>
   async delete(id: string | UniqueEntityId): Promise<void> {
     await this._get(id.toString()); // check if exists
     const indexFound = this.items.findIndex(
-      (item) => item.id === id.toString()
+      (item) => item.id === id.toString(),
     );
     this.items.splice(indexFound, 1);
   }
@@ -57,17 +61,17 @@ export abstract class InMemorySearchableRepository<E extends Entity>
   async search(searchParams: SearchParams): Promise<SearchResult<E>> {
     const filteredItems = await this.applyFilter(
       this.items,
-      searchParams.filter
+      searchParams.filter,
     );
     const sortedItems = await this.applySort(
       filteredItems,
       searchParams.sort,
-      searchParams.sort_dir
+      searchParams.sort_dir,
     );
     const paginatedItems = await this.applyPaginate(
       sortedItems,
       searchParams.page,
-      searchParams.per_page
+      searchParams.per_page,
     );
 
     return new SearchResult({
@@ -83,13 +87,13 @@ export abstract class InMemorySearchableRepository<E extends Entity>
 
   protected abstract applyFilter(
     items: E[],
-    filter: SearchParams['filter']
+    filter: SearchParams['filter'],
   ): Promise<E[]>;
 
   protected async applySort(
     items: E[],
     sort: SearchParams['sort'],
-    sort_dir: SearchParams['sort_dir']
+    sort_dir: SearchParams['sort_dir'],
   ): Promise<E[]> {
     if (!sort || !this.sortableFields.includes(sort)) {
       return items;
@@ -113,7 +117,7 @@ export abstract class InMemorySearchableRepository<E extends Entity>
   protected async applyPaginate(
     items: E[],
     page: SearchParams['page'],
-    per_page: SearchParams['per_page']
+    per_page: SearchParams['per_page'],
   ): Promise<E[]> {
     const start = ((page || 1) - 1) * per_page;
     const limit = start + per_page;
