@@ -9,13 +9,14 @@ export class CategoryBuilder<TBuild = any> {
   private amount: number;
 
   // auto generated in entity
-  private _unique_entity_id = undefined;
+  private _unique_entity_id: PropOrFactory<UniqueEntityId | undefined> =
+    undefined;
   private _name: PropOrFactory<string> = () => this.chance.word();
   private _description: PropOrFactory<string | null> = () =>
     this.chance.paragraph();
   private _is_active: PropOrFactory<boolean> = () => true;
   // auto generated in entity
-  private _created_at = undefined;
+  private _created_at: PropOrFactory<Date> = undefined;
 
   constructor(countObjs: number = 1) {
     this.amount = countObjs;

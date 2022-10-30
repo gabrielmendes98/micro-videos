@@ -25,6 +25,7 @@ describe('CategoryBuilder Unit Tests', () => {
       expect(builder['_unique_entity_id']).toBe(uniqueEntityId);
 
       builder.withUniqueEntityId(() => uniqueEntityId);
+      // @ts-expect-error this expression is not callable
       expect(builder['_unique_entity_id']()).toBe(uniqueEntityId);
 
       expect(builder.unique_entity_id).toBe(uniqueEntityId);
@@ -193,6 +194,7 @@ describe('CategoryBuilder Unit Tests', () => {
       expect(builder['_created_at']).toBe(date);
 
       builder.withCreatedAt(() => date);
+      // @ts-expect-error this expression is not callable
       expect(builder['_created_at']()).toBe(date);
       expect(builder.created_at).toBe(date);
     });
