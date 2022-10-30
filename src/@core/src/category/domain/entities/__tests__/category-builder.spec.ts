@@ -9,7 +9,7 @@ describe('CategoryBuilder Unit Tests', () => {
     it('should throw error when any with methods has called', () => {
       expect(() => builder['getValue']('unique_entity_id')).toThrow(
         new Error(
-          "Property unique_entity_id not have a factory, use 'with' methods",
+          "Property unique_entity_id is not defined, use 'with' methods",
         ),
       );
     });
@@ -179,7 +179,7 @@ describe('CategoryBuilder Unit Tests', () => {
     it('should throw error when any with methods has called', () => {
       const builderCategory = CategoryBuilder.aCategory();
       expect(() => builderCategory.created_at).toThrow(
-        new Error("Property created_at not have a factory, use 'with' methods"),
+        new Error("Property created_at is not defined, use 'with' methods"),
       );
     });
 

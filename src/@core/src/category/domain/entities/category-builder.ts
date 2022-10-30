@@ -141,9 +141,7 @@ export class CategoryBuilder<TBuild = any> {
     const optional = ['unique_entity_id', 'created_at'];
     const privateProp = `_${prop}`;
     if (!this[privateProp] && optional.includes(prop)) {
-      throw new Error(
-        `Property ${prop} not have a factory, use 'with' methods`,
-      );
+      throw new Error(`Property ${prop} is not defined, use 'with' methods`);
     }
     return this.callFactory(this[privateProp], 0);
   }
