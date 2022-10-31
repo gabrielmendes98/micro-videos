@@ -53,14 +53,14 @@ describe('ListCategoriesUseCase unit tests', () => {
 
   it('should return output with categories ordered by created_at when use empty input', async () => {
     const items = [
-      new Category({
-        name: 'movie',
-        created_at: new Date('2022-09-26T01:06:35.882Z'),
-      }),
-      new Category({
-        name: 'movie',
-        created_at: new Date('2022-09-27T01:06:35.882Z'),
-      }),
+      Category.fake()
+        .aCategory()
+        .withCreatedAt(new Date('2022-09-26T01:06:35.882Z'))
+        .build(),
+      Category.fake()
+        .aCategory()
+        .withCreatedAt(new Date('2022-09-27T01:06:35.882Z'))
+        .build(),
     ];
     repository.items = items;
 

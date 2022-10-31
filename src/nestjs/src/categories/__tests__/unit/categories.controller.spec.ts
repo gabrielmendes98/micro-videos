@@ -5,7 +5,10 @@ import {
   ListCategoriesUseCase,
   UpdateCategoryUseCase,
 } from 'core/category/application';
-import { CategoryPresenter } from 'src/categories/presenter/category.presenter';
+import {
+  CategoryCollectionPresenter,
+  CategoryPresenter,
+} from 'src/categories/presenter/category.presenter';
 import { CategoriesController } from '../../categories.controller';
 import { CreateCategoryDto } from '../../dto/create-category.dto';
 import { UpdateCategoryDto } from '../../dto/update-category.dto';
@@ -148,9 +151,10 @@ describe('CategoriesController unit tests', () => {
 
     controller['listUseCase'] = listUseCaseMock as any;
 
-    const response = await controller.search(input);
+    const presenter = await controller.search(input);
 
     expect(listUseCaseMock.execute).toHaveBeenCalledWith(input);
-    expect(response).toStrictEqual(output);
+    expect(presenter).toBeInstanceOf(CategoryCollectionPresenter);
+    expect(presenter).toEqual(new CategoryCollectionPresenter(output));
   });
 });
