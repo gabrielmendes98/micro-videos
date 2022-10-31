@@ -1,5 +1,9 @@
-import { CategoryOutputDto } from 'core/category/application';
+import {
+  CategoryOutputDto,
+  ListCategoriesUseCase,
+} from 'core/category/application';
 import { Transform } from 'class-transformer';
+import { CollectionPresenter } from 'src/@shared/presenters/collection.presenter';
 
 export class CategoryPresenter {
   id: string;
@@ -15,5 +19,18 @@ export class CategoryPresenter {
     this.description = output.description;
     this.is_active = output.is_active;
     this.created_at = output.created_at;
+  }
+}
+
+export class CategoryCollectionPresenter extends CollectionPresenter<CategoryPresenter> {
+  data: CategoryPresenter[];
+
+  // tambem poderia ser
+  // constructor(output: CategoryOutputDto[], paginationProps) {}
+
+  constructor(output: ListCategoriesUseCase.Output) {
+    const { items, ...paginationProps } = output;
+    super(paginationProps);
+    this.data = items.map((item) => new CategoryPresenter(item));
   }
 }
