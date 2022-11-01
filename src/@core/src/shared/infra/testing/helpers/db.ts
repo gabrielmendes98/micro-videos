@@ -1,23 +1,26 @@
-import { testConfig } from '#shared/infra';
+import { getConfig } from '../../config/index';
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 
-const defaultOptions: SequelizeOptions = {
-  dialect: testConfig.db.vendor,
-  host: testConfig.db.host,
-  logging: testConfig.db.logging,
-};
+export function setupSequelize(options: SequelizeOptions = {}) {
+  const config = getConfig();
+  const sequelizeOptions: SequelizeOptions = {
+    dialect: config.db.vendor,
+    host: config.db.host,
+    logging: config.db.logging,
+  };
 
-export function setupSequelize(options: SequelizeOptions) {
   let _sequelize: Sequelize;
 
-  beforeAll(() => {
-    _sequelize = new Sequelize({ ...defaultOptions, ...options });
-  });
+  beforeAll(
+    () =>
+      (_sequelize = new Sequelize({
+        ...sequelizeOptions,
+        ...options,
+      })),
+  );
 
   beforeEach(async () => {
-    await _sequelize.sync({
-      force: true,
-    });
+    await _sequelize.sync({ force: true });
   });
 
   afterAll(async () => {

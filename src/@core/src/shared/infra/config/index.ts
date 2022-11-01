@@ -1,25 +1,28 @@
 import { config as readEnv } from 'dotenv';
 import { join } from 'path';
+import { Dialect } from 'sequelize/types';
 
-export type Config = {
-  db: {
-    vendor: any;
-    host: string;
-    logging: boolean;
-  };
-};
-
-export function makeConfig(envFile: string): Config {
-  const output = readEnv({ path: envFile });
+function makeConfig(envFile) {
+  const { parsed } = readEnv({ path: envFile });
 
   return {
     db: {
-      vendor: output.parsed.DB_VENDOR as any,
-      host: output.parsed.DB_HOST,
-      logging: output.parsed.DB_LOGGING === 'true',
+      vendor: parsed.DB_VENDOR as Dialect,
+      host: parsed.DB_HOST,
+      logging: parsed.DB_LOGGING === 'true',
     },
   };
 }
 
+//const envTestingFile = join(__dirname, '../../../../.env.${process.env.NODE_ENV}');
+
 const envTestingFile = join(__dirname, '../../../../.env.test');
-export const testConfig = makeConfig(envTestingFile);
+let configTest = null;
+
+export const getConfig = () => {
+  if (!configTest) {
+    configTest = makeConfig(envTestingFile);
+  }
+
+  return configTest;
+};
