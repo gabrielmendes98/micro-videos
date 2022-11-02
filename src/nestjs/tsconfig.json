@@ -8,5 +8,5 @@
       "core/*": ["../@core/dist/*"]
     }
   },
-  "include": ["./src/"]
+  "include": ["./src/", "./test"]
 }
