@@ -11,6 +11,7 @@ import { NotFoundError, SortDirection } from 'core/shared/domain';
 import { CategoriesController } from 'src/categories/categories.controller';
 import { CategoriesModule } from 'src/categories/categories.module';
 import { CATEGORY_PROVIDERS } from 'src/categories/category.providers';
+import { CategoryFixture } from 'src/categories/fixtures';
 import { CategoryCollectionPresenter } from 'src/categories/presenter/category.presenter';
 import { ConfigModule } from 'src/config/config.module';
 import { DatabaseModule } from 'src/database/database.module';
@@ -45,59 +46,23 @@ describe('CategoriesController integration tests', () => {
   });
 
   describe('should create a category', () => {
-    const arrange = [
-      {
-        request: {
-          name: 'Movie',
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          description: null,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-      {
-        request: {
-          name: 'Movie',
-          is_active: true,
-        },
-        expectedPresenter: {
-          name: 'Movie',
-          description: null,
-          is_active: true,
-        },
-      },
-    ];
-
+    const arrange = CategoryFixture.arrangeForSave();
     test.each(arrange)(
-      'with request $request',
-      async ({ request, expectedPresenter }) => {
-        const presenter = await controller.create(request);
+      'when body is $sendData',
+      async ({ sendData, expected }) => {
+        const presenter = await controller.create(sendData);
         const entity = await repository.findById(presenter.id);
 
-        expect(entity).toMatchObject({
+        expect(entity.toJSON()).toMatchObject({
           id: presenter.id,
-          name: expectedPresenter.name,
-          description: expectedPresenter.description,
-          is_active: expectedPresenter.is_active,
           created_at: presenter.created_at,
+          ...expected,
         });
 
         expect(presenter.id).toBe(entity.id);
-        expect(presenter.name).toBe(expectedPresenter.name);
-        expect(presenter.description).toBe(expectedPresenter.description);
-        expect(presenter.is_active).toBe(expectedPresenter.is_active);
+        expect(presenter.name).toBe(expected.name);
+        expect(presenter.description).toBe(expected.description);
+        expect(presenter.is_active).toBe(expected.is_active);
         expect(presenter.created_at).toStrictEqual(entity.created_at);
       },
     );
