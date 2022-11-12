@@ -39,16 +39,17 @@ describe('CategoriesController (e2e)', () => {
             .send(sendData)
             .expect(201);
 
-          expect(Object.keys(res.body)).toStrictEqual(
+          expect(Object.keys(res.body)).toStrictEqual(['data']);
+          expect(Object.keys(res.body.data)).toStrictEqual(
             CategoryFixture.keysInResponse(),
           );
-          const createdCategory = await categoryRepo.findById(res.body.id);
+          const createdCategory = await categoryRepo.findById(res.body.data.id);
           const presenter = CategoriesController.categoryToResponse(
             createdCategory.toJSON(),
           );
           const serialized = instanceToPlain(presenter);
 
-          expect(res.body).toStrictEqual({
+          expect(res.body.data).toStrictEqual({
             id: serialized.id,
             created_at: serialized.created_at,
             ...expected,
