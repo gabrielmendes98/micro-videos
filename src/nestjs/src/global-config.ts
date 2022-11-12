@@ -4,6 +4,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { EntityValidationErrorFilter } from './@shared/exception-filters/entity-validation-error.filter';
 import { DataWrapperInterceptor } from './@shared/interceptors/data-wrapper.interceptor';
 
 export function applyGlobalConfig(app: INestApplication) {
@@ -16,4 +17,5 @@ export function applyGlobalConfig(app: INestApplication) {
     new DataWrapperInterceptor(),
     new ClassSerializerInterceptor(app.get(Reflector)),
   );
+  app.useGlobalFilters(new EntityValidationErrorFilter());
 }
