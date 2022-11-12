@@ -28,9 +28,24 @@ describe('CategoriesController (e2e)', () => {
   });
 
   describe('POST /categories', () => {
-    const arrange = CategoryFixture.arrangeForSave();
+    describe('should return error 422 when request body is invalid', () => {
+      const invalidRequest = CategoryFixture.invalidRequestArrange();
+      const arrange = Object.keys(invalidRequest).map((key) => ({
+        label: key,
+        value: invalidRequest[key],
+      }));
+
+      test.each(arrange)('when body is $label', async ({ value }) => {
+        const res = await request(app.getHttpServer())
+          .post('/categories')
+          .send(value)
+          .expect(422);
+      });
+    });
 
     describe('should create a category', () => {
+      const arrange = CategoryFixture.arrangeForSave();
+
       test.each(arrange)(
         'when body is $sendData',
         async ({ sendData, expected }) => {

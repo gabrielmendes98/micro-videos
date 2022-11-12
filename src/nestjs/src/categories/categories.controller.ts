@@ -9,7 +9,7 @@ import {
   Inject,
   HttpCode,
   Query,
-  UseInterceptors,
+  ValidationPipe,
 } from '@nestjs/common';
 import {
   CategoryOutputDto,

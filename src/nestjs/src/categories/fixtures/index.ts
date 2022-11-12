@@ -42,4 +42,33 @@ export class CategoryFixture {
       },
     ];
   }
+
+  static invalidRequestArrange() {
+    const faker = Category.fake().aCategory();
+    const defaultExpected = {
+      statusCode: 422,
+      error: 'Unprocessable Entity',
+    };
+
+    return {
+      empty: {
+        sendData: {},
+        expected: {
+          message: ['name should not be empty', 'name must be a string'],
+          statusCode: 422,
+          ...defaultExpected,
+        },
+      },
+      undefinedName: {
+        sendData: {
+          name: faker.withInvalidNameEmpty(undefined).name,
+        },
+        expected: {
+          message: ['name should not be empty', 'name must be a string'],
+          statusCode: 422,
+          ...defaultExpected,
+        },
+      },
+    };
+  }
 }
