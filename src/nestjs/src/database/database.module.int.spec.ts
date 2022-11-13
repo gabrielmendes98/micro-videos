@@ -50,7 +50,7 @@ describe('DatabaseModule integration tests', () => {
     const connOptions = {
       DB_VENDOR: 'mysql',
       DB_HOST: 'localhost',
-      DB_DATABASE: 'micro-videos',
+      DB_DATABASE: 'micro_videos',
       DB_USERNAME: 'root',
       DB_PASSWORD: 'root',
       DB_PORT: 3306,
@@ -82,12 +82,11 @@ describe('DatabaseModule integration tests', () => {
     //   }).compile();
 
     //   const app = module.createNestApplication();
-    //   console.log(app.get(ConfigService));
     //   const conn = app.get<Sequelize>(getConnectionToken());
     //   expect(conn).toBeDefined();
     //   expect(conn.options.dialect).toBe('mysql');
     //   expect(conn.options.host).toBe('localhost');
-    //   expect(conn.options.database).toBe('micro-videos');
+    //   expect(conn.options.database).toBe('micro_videos');
     //   expect(conn.options.username).toBe('root');
     //   expect(conn.options.password).toBe('root');
     //   expect(conn.options.port).toBe(3306);
