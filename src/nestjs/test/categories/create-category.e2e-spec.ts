@@ -8,6 +8,7 @@ import { CreateCategoryFixture } from 'src/categories/fixtures';
 import { CategoriesController } from 'src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from 'src/global-config';
+import { getConnectionToken } from '@nestjs/sequelize';
 
 function startApp({
   beforeInit,
@@ -83,6 +84,8 @@ describe('CategoriesController (e2e)', () => {
       const arrange = CreateCategoryFixture.arrangeForSave();
 
       beforeEach(() => {
+        const sequelize = app.app.get(getConnectionToken());
+        sequelize.sync({ force: true });
         categoryRepo = app.app.get<CategoryRepository.Repository>(
           CATEGORY_PROVIDERS.REPOSITORIES.IN_USE.provide,
         );

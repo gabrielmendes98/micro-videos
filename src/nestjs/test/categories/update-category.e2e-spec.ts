@@ -8,6 +8,7 @@ import { UpdateCategoryFixture } from 'src/categories/fixtures';
 import { CategoriesController } from 'src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
 import { applyGlobalConfig } from 'src/global-config';
+import { getConnectionToken } from '@nestjs/sequelize';
 
 function startApp({
   beforeInit,
@@ -137,6 +138,8 @@ describe('CategoriesController (e2e)', () => {
         categoryRepo = app.app.get<CategoryRepository.Repository>(
           CATEGORY_PROVIDERS.REPOSITORIES.IN_USE.provide,
         );
+        const sequelize = app.app.get(getConnectionToken());
+        sequelize.sync({ force: true });
       });
 
       test.each(arrange)(

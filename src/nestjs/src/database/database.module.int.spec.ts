@@ -49,8 +49,8 @@ describe('DatabaseModule integration tests', () => {
   describe('mysql connection', () => {
     const connOptions = {
       DB_VENDOR: 'mysql',
-      DB_HOST: 'localhost',
-      DB_DATABASE: 'micro_videos',
+      DB_HOST: 'db_test',
+      DB_DATABASE: 'micro_videos_test',
       DB_USERNAME: 'root',
       DB_PASSWORD: 'root',
       DB_PORT: 3306,
@@ -66,31 +66,30 @@ describe('DatabaseModule integration tests', () => {
       expect(error).toBeUndefined();
     });
 
-    //TODO
-    // it('should be a mysql connection', async () => {
-    //   const module = await Test.createTestingModule({
-    //     imports: [
-    //       DatabaseModule,
-    //       ConfigModule.forRoot({
-    //         isGlobal: true,
-    //         ignoreEnvFile: true,
-    //         ignoreEnvVars: true,
-    //         validationSchema: null,
-    //         load: [() => connOptions],
-    //       }),
-    //     ],
-    //   }).compile();
+    it('should be a mysql connection', async () => {
+      const module = await Test.createTestingModule({
+        imports: [
+          DatabaseModule,
+          ConfigModule.forRoot({
+            isGlobal: true,
+            ignoreEnvFile: true,
+            ignoreEnvVars: true,
+            validationSchema: null,
+            load: [() => connOptions],
+          }),
+        ],
+      }).compile();
 
-    //   const app = module.createNestApplication();
-    //   const conn = app.get<Sequelize>(getConnectionToken());
-    //   expect(conn).toBeDefined();
-    //   expect(conn.options.dialect).toBe('mysql');
-    //   expect(conn.options.host).toBe('localhost');
-    //   expect(conn.options.database).toBe('micro_videos');
-    //   expect(conn.options.username).toBe('root');
-    //   expect(conn.options.password).toBe('root');
-    //   expect(conn.options.port).toBe(3306);
-    //   await conn.close();
-    // });
+      const app = module.createNestApplication();
+      const conn = app.get<Sequelize>(getConnectionToken());
+      expect(conn).toBeDefined();
+      expect(conn.options.dialect).toBe('mysql');
+      expect(conn.options.host).toBe('db_test');
+      expect(conn.options.database).toBe('micro_videos_test');
+      expect(conn.options.username).toBe('root');
+      expect(conn.options.password).toBe('root');
+      expect(conn.options.port).toBe(3306);
+      await conn.close();
+    });
   });
 });
