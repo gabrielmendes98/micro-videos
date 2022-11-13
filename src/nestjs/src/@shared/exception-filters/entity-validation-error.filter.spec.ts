@@ -15,7 +15,7 @@ class StubController {
   }
 }
 
-describe('EntityValidationErrorFilter', () => {
+describe('EntityValidationErrorFilter e2e tests', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
