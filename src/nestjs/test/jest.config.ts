@@ -11,4 +11,5 @@ export default {
     '^core/(.*)$': '<rootDir>/../../@core/src/$1',
     'src/(.*)$': '<rootDir>/../src/$1',
   },
+  setupFilesAfterEnv: [],
 };
