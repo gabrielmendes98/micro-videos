@@ -9,6 +9,8 @@ export default {
   maxWorkers: 1,
   moduleNameMapper: {
     '^core/(.*)$': '<rootDir>/../../@core/src/$1',
+    '#shared/(.*)$': '<rootDir>/../../@core/src/shared/$1',
+    '#category/(.*)$': '<rootDir>/../../@core/src/category/$1',
     'src/(.*)$': '<rootDir>/../src/$1',
   },
   setupFilesAfterEnv: [],

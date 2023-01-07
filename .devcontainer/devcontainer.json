@@ -24,7 +24,8 @@
     "esbenp.prettier-vscode",
     "PKief.material-icon-theme",
     "eamodio.gitlens",
-    "SonarSource.sonarlint-vscode"
+    "SonarSource.sonarlint-vscode",
+    "Orta.vscode-jest"
   ]
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
