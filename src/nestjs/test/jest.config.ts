@@ -14,4 +14,5 @@ export default {
     'src/(.*)$': '<rootDir>/../src/$1',
   },
   setupFilesAfterEnv: [],
+  setupFiles: ['<rootDir>/setup-test.ts'],
 };

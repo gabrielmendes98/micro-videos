@@ -9,6 +9,7 @@ export default {
   transform: {
     '^.+\\.(t|j)s$': '@swc/jest',
   },
+  setupFiles: ['<rootDir>/src/setup-test.ts'],
   setupFilesAfterEnv: [
     '<rootDir>/../@core/src/shared/domain/tests/validations.ts',
     '<rootDir>/../@core/src/shared/domain/tests/jest.ts',
