@@ -40,8 +40,8 @@ describe('DatabaseModule integration tests', () => {
       const connection = app.get<Sequelize>(getConnectionToken());
 
       expect(connection).toBeDefined();
-      expect(connection.options.dialect).toBe('sqlite');
-      expect(connection.options.host).toBe(':memory:');
+      expect(connection.options.dialect).toBe(connectionOptions.DB_VENDOR);
+      expect(connection.options.host).toBe(connectionOptions.DB_HOST);
       await connection.close();
     });
   });
@@ -83,12 +83,12 @@ describe('DatabaseModule integration tests', () => {
       const app = module.createNestApplication();
       const conn = app.get<Sequelize>(getConnectionToken());
       expect(conn).toBeDefined();
-      expect(conn.options.dialect).toBe('mysql');
-      expect(conn.options.host).toBe('db_test');
-      expect(conn.options.database).toBe('micro_videos_test');
-      expect(conn.options.username).toBe('root');
-      expect(conn.options.password).toBe('root');
-      expect(conn.options.port).toBe(3306);
+      expect(conn.options.dialect).toBe(connOptions.DB_VENDOR);
+      expect(conn.options.host).toBe(connOptions.DB_HOST);
+      expect(conn.options.database).toBe(connOptions.DB_DATABASE);
+      expect(conn.options.username).toBe(connOptions.DB_USERNAME);
+      expect(conn.options.password).toBe(connOptions.DB_PASSWORD);
+      expect(conn.options.port).toBe(connOptions.DB_PORT);
       await conn.close();
     });
   });
