@@ -1,39 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
 import request from 'supertest';
-import { AppModule } from 'src/app.module';
 import { Category, CategoryRepository } from 'core/category/domain';
 import { CATEGORY_PROVIDERS } from 'src/categories/category.providers';
 import { UpdateCategoryFixture } from 'src/categories/fixtures';
 import { CategoriesController } from 'src/categories/categories.controller';
 import { instanceToPlain } from 'class-transformer';
-import { applyGlobalConfig } from 'src/global-config';
 import { getConnectionToken } from '@nestjs/sequelize';
-
-function startApp({
-  beforeInit,
-}: {
-  beforeInit?: (app: INestApplication) => void;
-} = {}) {
-  let _app: INestApplication;
-
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    _app = moduleFixture.createNestApplication();
-    applyGlobalConfig(_app);
-    beforeInit && beforeInit(_app);
-    await _app.init();
-  });
-
-  return {
-    get app() {
-      return _app;
-    },
-  };
-}
+import { startApp } from 'src/@shared/testing/helpers';
 
 describe('CategoriesController (e2e)', () => {
   const uuid = 'dd2d887b-6403-4519-add4-81575076e105';
