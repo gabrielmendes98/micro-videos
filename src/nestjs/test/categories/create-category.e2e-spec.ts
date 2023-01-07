@@ -37,46 +37,46 @@ function startApp({
 
 describe('CategoriesController (e2e)', () => {
   describe('POST /categories', () => {
-    // describe('should return error 422 when request body is invalid', () => {
-    //   const app = startApp();
+    describe('should return error 422 when request body is invalid', () => {
+      const app = startApp();
 
-    //   const invalidRequest = CreateCategoryFixture.invalidRequestArrange();
-    //   const arrange = Object.keys(invalidRequest).map((key) => ({
-    //     label: key,
-    //     value: invalidRequest[key],
-    //   }));
+      const invalidRequest = CreateCategoryFixture.invalidRequestArrange();
+      const arrange = Object.keys(invalidRequest).map((key) => ({
+        label: key,
+        value: invalidRequest[key],
+      }));
 
-    //   test.each(arrange)('when body is $label', ({ value }) => {
-    //     return request(app.app.getHttpServer())
-    //       .post('/categories')
-    //       .send(value.sendData)
-    //       .expect(422)
-    //       .expect(value.expected);
-    //   });
-    // });
+      test.each(arrange)('when body is $label', ({ value }) => {
+        return request(app.app.getHttpServer())
+          .post('/categories')
+          .send(value.sendData)
+          .expect(422)
+          .expect(value.expected);
+      });
+    });
 
-    // describe('should return error 422 when throw EntityValidationError', () => {
-    //   const app = startApp({
-    //     beforeInit: (app) => {
-    //       app['config'].globalPipes = [];
-    //     },
-    //   });
+    describe('should return error 422 when throw EntityValidationError', () => {
+      const app = startApp({
+        beforeInit: (app) => {
+          app['config'].globalPipes = [];
+        },
+      });
 
-    //   const invalidRequest =
-    //     CreateCategoryFixture.entityValidationErrorArrange();
-    //   const arrange = Object.keys(invalidRequest).map((key) => ({
-    //     label: key,
-    //     value: invalidRequest[key],
-    //   }));
+      const invalidRequest =
+        CreateCategoryFixture.entityValidationErrorArrange();
+      const arrange = Object.keys(invalidRequest).map((key) => ({
+        label: key,
+        value: invalidRequest[key],
+      }));
 
-    //   test.each(arrange)('when body is $label', ({ value }) => {
-    //     return request(app.app.getHttpServer())
-    //       .post('/categories')
-    //       .send(value.sendData)
-    //       .expect(422)
-    //       .expect(value.expected);
-    //   });
-    // });
+      test.each(arrange)('when body is $label', ({ value }) => {
+        return request(app.app.getHttpServer())
+          .post('/categories')
+          .send(value.sendData)
+          .expect(422)
+          .expect(value.expected);
+      });
+    });
 
     describe('should create a category', () => {
       let categoryRepo: CategoryRepository.Repository;
