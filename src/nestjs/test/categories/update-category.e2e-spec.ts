@@ -134,12 +134,12 @@ describe('CategoriesController (e2e)', () => {
       const app = startApp();
       const arrange = UpdateCategoryFixture.arrangeForSave();
 
-      beforeEach(() => {
+      beforeEach(async () => {
         categoryRepo = app.app.get<CategoryRepository.Repository>(
           CATEGORY_PROVIDERS.REPOSITORIES.IN_USE.provide,
         );
         const sequelize = app.app.get(getConnectionToken());
-        sequelize.sync({ force: true });
+        await sequelize.sync({ force: true });
       });
 
       test.each(arrange)(

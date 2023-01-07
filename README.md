@@ -17,3 +17,7 @@ Conectar no banco de dados via command line:
 - mysql -u root -p
 - use micro_videos;
 - select \* from categories;
+
+Se quiser subir o db do docker compose:
+
+- docker compose --profile dev up
