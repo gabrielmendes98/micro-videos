@@ -43,7 +43,7 @@ describe('CategoryPresenter unit tests', () => {
       name: 'some name',
       description: 'some desc',
       is_active: true,
-      created_at: created_at.toISOString(),
+      created_at: created_at.toISOString().slice(0, 19) + '.000Z',
     });
   });
 });
@@ -87,7 +87,7 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       data: [
         {
           ...category.toJSON(),
-          created_at: category.created_at.toISOString(),
+          created_at: category.created_at.toISOString().slice(0, 19) + '.000Z',
         },
       ],
       meta: {
@@ -116,7 +116,7 @@ describe('CategoryCollectionPresenter Unit Tests', () => {
       data: [
         {
           ...category.toJSON(),
-          created_at: category.created_at.toISOString(),
+          created_at: category.created_at.toISOString().slice(0, 19) + '.000Z',
         },
       ],
     });
