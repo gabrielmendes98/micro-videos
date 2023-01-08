@@ -2,6 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from 'src/app.module';
 import { applyGlobalConfig } from 'src/global-config';
+import { getConnectionToken } from '@nestjs/sequelize';
 
 export function startApp({
   beforeInit,
@@ -11,11 +12,12 @@ export function startApp({
   let _app: INestApplication;
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
+    const moduleBuilder: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
-
-    _app = moduleFixture.createNestApplication();
+    const sequelize = moduleBuilder.get(getConnectionToken());
+    await sequelize.sync({ force: true });
+    _app = moduleBuilder.createNestApplication();
     applyGlobalConfig(_app);
     beforeInit && beforeInit(_app);
     await _app.init();

@@ -1,6 +1,6 @@
 import { Category, CategoryRepository } from '#category/domain';
-import { NotFoundError, UniqueEntityId } from '#shared/domain';
-import { Op } from 'sequelize';
+import { NotFoundError, SortDirection, UniqueEntityId } from '#shared/domain';
+import { literal, Op } from 'sequelize';
 import { CategoryModel } from './category-model';
 import { CategoryModelMapper } from './category-model-mapper';
 
@@ -8,6 +8,11 @@ export class CategorySequelizeRepository
   implements CategoryRepository.Repository
 {
   sortableFields: string[] = ['name', 'created_at'];
+  orderBy = {
+    mysql: {
+      name: (sortDir: SortDirection) => literal(`binary name ${sortDir}`),
+    },
+  };
 
   constructor(private categoryModel: typeof CategoryModel) {}
 
@@ -22,7 +27,7 @@ export class CategorySequelizeRepository
         where: { name: { [Op.like]: `%${searchParams.filter}%` } },
       }),
       ...(searchParams.sort && this.sortableFields.includes(searchParams.sort)
-        ? { order: [[searchParams.sort, searchParams.sort_dir]] }
+        ? { order: this.formatSort(searchParams.sort, searchParams.sort_dir) }
         : { order: [['created_at', 'DESC']] }),
       offset,
       limit,
@@ -37,6 +42,14 @@ export class CategorySequelizeRepository
       sort: searchParams.sort,
       sort_dir: searchParams.sort_dir,
     });
+  }
+
+  private formatSort(sort: string, sortDir: SortDirection) {
+    const dialect = this.categoryModel.sequelize.getDialect();
+    if (this.orderBy[dialect] && this.orderBy[dialect][sort]) {
+      return this.orderBy[dialect][sort](sortDir);
+    }
+    return [[sort, sortDir]];
   }
 
   async insert(entity: Category): Promise<void> {
