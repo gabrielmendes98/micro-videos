@@ -5,7 +5,7 @@ import { CATEGORY_PROVIDERS } from 'src/categories/category.providers';
 import { NotFoundError } from 'core/shared/domain';
 
 describe('CategoriesController (e2e)', () => {
-  describe('/delete/:id (DELETE)', () => {
+  describe('DELETE /delete/:id', () => {
     const nestApp = startApp();
     describe('should a response error when id is invalid or not found', () => {
       const arrange = [
