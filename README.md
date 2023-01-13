@@ -21,5 +21,3 @@ Conectar no banco de dados via command line:
 Se quiser subir o db do docker compose:
 
 - docker compose --profile dev up
-
-test git commit sign
